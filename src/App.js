@@ -1,40 +1,58 @@
 import React from 'react'
+import  "./App.css"
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import './App.css';
-import AutoWash from './components/AutoWash/AutoWash';
-import Car from './components/Cars/Car';
-import Client from './components/Client/Client';
-import Header from './components/Header/Header';
-import History from './components/History/History';
-import Home from './components/Home/Home';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Col, Row } from 'react-bootstrap';
 import Navbar from './components/layout/Navbar/Navbar';
-import Parking from './components/Parking/Parking';
-import Report from './components/Report/Report';
+import Home from './components/Home/Home'
+import Parking from './components/Parking/Parking'
+import AutoWash from './components/AutoWash/AutoWash'
+import Client from './components/Client/Client';
+import Employee from './components/Employee/Employee';
+import History from './components/History/History';
 import Settings from './components/Settings/Settings';
+import Header from './components/Header/Header'
+import SignIn from './components/SignIn/SingIn';
+import { connect } from 'react-redux';
 
-function App() {
+function App(props) {
+  const {auth} = props 
   return (
     <BrowserRouter>
         <div className="App">
-          <Header />
-          <div className="main"> 
-            <Navbar />
-            <div class="dashboard">
-              <Switch>
-                  <Route exact path="/" component={Home}/>
-                  <Route exact path="/carwash" component={AutoWash}/>
-                  <Route exact path="/parking" component={Parking}/>
-                  <Route exact path="/clients" component={Client}/>
-                  <Route exact path="/cars" component={Car}/>
-                  <Route exact path="/paymenthistory" component={History}/>
-                  <Route exact path="/repords" component={Report}/>
-                  <Route exact path="/settings" component={Settings}/>
-              </Switch>
-            </div>
-          </div>
+          <Row>
+            <Col>
+              <Header />
+            </Col>
+          </Row>
+          
+        {auth.uid ? <Row>
+                    <Col sm={3}>
+                      <Navbar />
+                    </Col>
+                    <Col sm={9}>
+                      <Switch>
+                        <Route exact path="/main" component={Home}></Route>
+                        <Route  path="/parking" component={ Parking }></Route>
+                        <Route  path="/carwash" component={ AutoWash }></Route>
+                        <Route  path="/clients" component={ Client }></Route>
+                        <Route  path="/employee" component={ Employee }></Route>
+                        <Route  path="/history" component={ History }></Route>
+                        <Route  path="/settings" component={ Settings }></Route>
+                      </Switch>
+                    </Col>
+                  </Row>   : <SignIn />
+
+        }
         </div>
     </BrowserRouter>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth
+  }
+}
+
+export default connect(mapStateToProps)(App)

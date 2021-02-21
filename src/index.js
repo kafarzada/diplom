@@ -3,15 +3,34 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { applyMiddleware, createStore, compose } from 'redux';
+import rootReducer from './store/redusers/rootReducer';
+import thunk from 'redux-thunk';
+import {reduxFirestore, getFirestore} from 'redux-firestore'
+import {reactReduxFirebase, getFirebase} from 'react-redux-firebase'
+import firebase from "./config/config"
+import { Provider } from 'react-redux';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const store = createStore(rootReducer,
+  compose(
+    applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
+    reduxFirestore(firebase),
+    reactReduxFirebase(firebase, {useFirestoreForProfile: true, userProfile: "users" ,attachAuthIsReady: true})
+  )
+)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+store.firebaseAuthIsReady.then(() => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>,
+    document.getElementById('root')
+  );
+  
+  reportWebVitals();
+})
+
+

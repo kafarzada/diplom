@@ -1,26 +1,42 @@
 import React from 'react'
-import SignedInLinks from '../layout/SignedInLinks'
-import SignedOutLinks from '../layout/SignedOutLinks'
+import { Form, FormControl, Nav, Navbar } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { signOut } from '../../store/actions/authActions'
+import s from './Header.module.css'
 
-const Header = () => {
-    const isAuth = true
+const Header = (props) => {
+    const {auth, sigOut} = props
+
+    const onClickHadnlerOut = (e) => {
+        e.preventDefault()
+
+        props.signOut()
+    }
     return (
     <header>
-        <div className="header__inner">
-            <div className="header__logo logo">LOGO</div>
-            <div className="header__right">
-                <ul className="header__nav nav">
-
-                    {isAuth ? <SignedInLinks /> :  <SignedOutLinks />}
-
-                </ul>
-                    
-                
+        <div className={s.header__inner}>
+            <h1>LOGO</h1>
+            <div className={s.header__nav}>
+                {
+                    auth.uid ? <Link onClick={onClickHadnlerOut}>Выйти</Link>
+                             :<Link to="/signin">Войти</Link>
+                }
             </div>
-        </div>  
+        </div>
     </header>
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        auth:  state.firebase.auth
+    }
+}
 
-export default Header
+const mapDipatchToProps = (dispatch) => {
+    return {
+        signOut: () => dispatch(signOut())
+    }
+}
+export default connect(mapStateToProps, mapDipatchToProps)(Header)

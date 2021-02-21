@@ -11,131 +11,26 @@ html, body {
   width: 100%;
   height: 100%;
   font-size: 18px;
+  overflow-x: hidden;
 }
 
-
-:root {
-  --primary-color: #37474f;
-  --primary-dark-color: #102027;
-  --primary-light-color: #62727b;
-
-  --secondary-color: #b0bec5;
-  --secondary-dark-color: #808e95;
-  --secondary-light-color: #e2f1f8;
-
-  --text-on-P-color: #eceff1;
-  --text-on-S-color: #263238;
-}
-
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 8;
-}
-
-
-.header__inner {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2em;
-  background-color: var(--primary-light-color);
-  box-shadow:  0px 10px 45px -16px black;
-}
-
-.logo {
-  font-weight: 900;
-  font-size: 30px;
-  color: var( --text-on-P-color);
-}
-
-.header__nav {
-  display: flex;
-  align-items: center;
-}
-
-.header__right {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav {
-  font-size: 20px;
-  font-weight: 500;
-}
 
 .nav__item {
-  padding: 1.2em;
   list-style: none;
 }
 
-.nav__item a i {
-  display: inline-block;
-  margin-right: 0.5em;
-}
-
-.nav__link {
+.nav__item a {
+  display: block;
+  margin: 0.4em;
+  color: black;
   text-decoration: none;
-  cursor: pointer;
-  color: var(--text-on-P-color);
-  transition: 0.3s linear;
+  font-weight: 600;
 }
 
-.nav__link:hover {
+.navParking {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgb(119, 119, 119);
+  padding: 20px;
 
-  color: #bdbdbd;
 }
 
-.account__link {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: var(--secondary-light-color);
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 900;
-  font-size: 20px;
-  color: var(--text-on-S-color);
-}
-
-
-.main {
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  min-height: 100vh;
-  right: 0;
-  padding-top: 145px;
-}
-
-
-
-
-
-.nav__inner {
-  background-color: var(--primary-color);
-  box-shadow: 5px 0px 10px -2px #aeadad;
-  overflow-y: auto;
-  min-height: 100vh;
-  text-align: left;
-}
-
-.main .nav {
-  flex: 0 0 20%;
-}
-
-.dashboard {
-  flex: 0 0 80%;
-  margin: 40px 10px 10px 40px;
-}
