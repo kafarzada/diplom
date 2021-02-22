@@ -1,26 +1,61 @@
 
 import React from 'react';
+import { Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
+import { compose } from 'redux';
 import OwnTable from '../layout/OwnTable';
 
 const Client = (props) => {
 
-
-  const data = [
-    {firstName: "Иван", lastName: "1"},
-    {firstName: "Иван", lastName: "2"},
-    {firstName: "Иван", lastName: "3"},
-    {firstName: "Иван", lastName: "4"},
-
-  ]
-  const titles = ["Имя", "Фамилия"]
+  const {clients} = props
+  
 
   return (
     <div>
-      <OwnTable titles={titles} data = {data} />
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Количество Машин</th>
+            </tr>
+          </thead>
+          <tbody>
+
+              {
+                clients && clients.map((client, index) => {
+                  
+                  return(
+                    <tr key={client.id}>
+                      <td>{index + 1}</td>
+                      <td><Link to={'/clientdetails/' + client.id}>{client.firstname}</Link> </td>
+                      <td>{client.lastname}</td>
+                      <td>{client.patronomic}</td>
+                      <td>{client.cars}</td>
+                    </tr>
+                  )
+                })
+              }
+
+          </tbody>
+      </Table>
     </div>
   )
 };
 
+const mapStateToProps = (state) => {
+  return {
+    clients: state.firestore.ordered.client
+  }
+}
 
-
-export default Client;
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    {collection: "client"}
+  ])
+)(Client)

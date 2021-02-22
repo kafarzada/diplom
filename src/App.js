@@ -14,6 +14,8 @@ import Settings from './components/Settings/Settings';
 import Header from './components/Header/Header'
 import SignIn from './components/SignIn/SingIn';
 import { connect } from 'react-redux';
+import EmployeeDetails from './components/Employee/EmployeDetails';
+import ClientDetails from './components/Client/ClientDetails';
 
 function App(props) {
   const {auth} = props 
@@ -30,13 +32,15 @@ function App(props) {
                     <Col sm={3}>
                       <Navbar />
                     </Col>
-                    <Col sm={9}>
+                    <Col sm={9} className="page">
                       <Switch>
                         <Route exact path="/main" component={Home}></Route>
                         <Route  path="/parking" component={ Parking }></Route>
                         <Route  path="/carwash" component={ AutoWash }></Route>
                         <Route  path="/clients" component={ Client }></Route>
+                        <Route  path="/clientdetails/:id" component={ ClientDetails }></Route>
                         <Route  path="/employee" component={ Employee }></Route>
+                        <Route path="/employeedetails/:id" component={ EmployeeDetails }></Route>
                         <Route  path="/history" component={ History }></Route>
                         <Route  path="/settings" component={ Settings }></Route>
                       </Switch>

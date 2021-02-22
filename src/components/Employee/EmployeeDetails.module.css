@@ -1,0 +1,42 @@
+.employee__details {
+    display: flex;
+    flex-direction: row;
+}
+
+.employee__image {
+    flex: 0 0 30%;
+}
+
+.employee__info {
+    flex: 0 0 70%;
+}
+.employee div{
+    border: 1px solid black;
+}
+
+.info__item {
+    list-style: none;
+    margin: 1.2em;
+}
+
+.info__item span {
+    color: black;
+    font-weight: 700;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.empImg {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: rgb(228, 228, 228);
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.employe_delete_row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.2em;
+}

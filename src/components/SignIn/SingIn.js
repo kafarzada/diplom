@@ -3,6 +3,7 @@ import {  Container,  } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { signIn } from '../../store/actions/authActions'
+import s from './Signin.module.css'
 
 class SignIn extends Component {
 
@@ -31,22 +32,23 @@ class SignIn extends Component {
 
     return (
       <Container>
-        <form onSubmit={this.handlerSubmit}>
-          <div>
-            <label htmlFor="email">Почта</label>
-            <input type="email" id="email" onChange={this.handlerChange}/>
-          </div>
+        <div className={s.signPage}>
+          <form   className={s.signform} onSubmit={this.handlerSubmit}>
+            <h2>Авторизация</h2>
+            <div>
+              <input type="email" id="email" onChange={this.handlerChange} placeholder="Email"/>
+            </div>
 
-          <div>
-            <label htmlFor="password">Пароль</label>
-            <input type="password" id="password" onChange={this.handlerChange}/>
-          </div>
+            <div>
+              <input type="password" id="password" onChange={this.handlerChange} placeholder="Пароль"/>
+            </div>
 
-          <div>
-            <button type="submit">Войти</button>
-            <div>{authError ? <p>{authError}</p> : null}</div>
-          </div>
-        </form>
+
+              <button type="submit">Войти</button>
+              <div className={s.signError}>{authError ? <p>{authError}</p> : null}</div>
+
+          </form>
+        </div>
       </Container>
     )
   }

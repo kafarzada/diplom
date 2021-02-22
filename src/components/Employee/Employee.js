@@ -1,62 +1,154 @@
 
-import React from 'react'
-import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
+import { Button, Col, Modal, Row, Spinner, Table } from 'react-bootstrap'
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
+import { compose } from 'redux';
+import { addEmployee } from '../../store/actions/employeeActions';
 
-const Employee = () => {
+const Employee = (props) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const {employees} = props
+  const {positions} = props
+
+    const employeesList = employees && employees.map((employe, index) => {
+        return (
+          <tr key={employe.id}>
+            {
+              <>
+              <td>{index + 1}</td>
+              <td><Link to={"/employeedetails/" + employe.id}>{employe.firstname}</Link></td>
+              <td>{employe.lastname}</td>
+              <td>{employe.patronymic}</td>
+              <td>{employe.phone}</td>
+              </>
+            }
+          </tr>
+        )
+    })
+
     return (
       <div>
             <Row>
                 <Col><Button onClick={() => setModalShow(true)}>Добавить Сотрудника</Button></Col>
             </Row>
-            <MyVerticallyCenteredModal
+            <Row>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Фамилия</th>
+                  <th>Имя</th>
+                  <th>Отчество</th>
+                  <th>Контактный Номер</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  employeesList
+                }
+              </tbody>
+            </Table>
+            </Row>
+            <NewMyVerticallyCenteredModal
               show={modalShow}
               onHide={() => setModalShow(false)}
+              positions={positions}
             />
       </div>
               
     )
 }
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Новый Сотрудник
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>ДАнные сотрудника</h4>
-        <Form>
-          <Form.Group controlId="formGroupName">
-            <Form.Label>Имя</Form.Label>
-            <Form.Control type="text" placeholder="Имя" />
-          </Form.Group>
-          <Form.Group controlId="formGroupLastName">
-            <Form.Label>Фамилия</Form.Label>
-            <Form.Control type="text" placeholder="Фамилия" />
-          </Form.Group>
-          <Form.Group controlId="formGrouppatronic">
-            <Form.Label>Отчество</Form.Label>
-            <Form.Control type="text" placeholder="Отчество" />
-          </Form.Group>
-          <Form.Group controlId="formGroupPhone">
-            <Form.Label>Контактный Номер</Form.Label>
-            <Form.Control type="text" placeholder="Контактный Номер" />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant={"outline-secondary"} onClick={props.onHide}>Закрыть</Button>
-        <Button variant="primary" type="submit" onClick={props.onHide}>Создать</Button>
-      </Modal.Footer>
-    </Modal>
-  );
+class  MyVerticallyCenteredModal extends Component {
+  state = {
+    firstName: '',
+    lastName: '',
+    patronymic: "",
+    phone: "",
+  }
+
+  handlerSubmit = (e) => {
+    e.preventDefault()
+    this.props.addEmployee(this.state)
+
+  }
+
+  hadlerChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+
+
+  render() {
+
+
+    return (
+      <Modal
+        {...this.props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Новый Сотрудник
+          </Modal.Title>
+        </Modal.Header>
+          <h4>ДАнные сотрудника</h4>
+          <form onSubmit={this.handlerSubmit}>
+            <Modal.Body>
+                <div>
+                  <input type="text" placeholder="Фамилия" id="firstName" onChange={this.hadlerChange}/>
+                </div>
+                <div>
+                  <input type="text" placeholder="Имя" id="lastName" onChange={this.hadlerChange}/>
+                </div>
+                <div>
+                  <input type="text" placeholder="Отчество" id="patronymic" onChange={this.hadlerChange}/>
+                </div>
+
+                <div>
+                  <input type="text" placeholder="Контактный номер" id="phone" onChange={this.hadlerChange}/>
+                </div>
+                <div>
+
+                </div>
+             </Modal.Body>
+            <Modal.Footer>
+              <Button variant={"outline-secondary"} onClick={this.props.onHide}>Закрыть</Button>
+              <Button variant="primary" type="submit" onClick={this.props.onHide}>Создать</Button>
+            </Modal.Footer>
+          </form>
+        
+
+      </Modal>
+    );
+  }
 }
-export default Employee
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addEmployee: (employee) => dispatch(addEmployee(employee))
+  }
+}
+const NewMyVerticallyCenteredModal = compose(
+  connect(null, mapDispatchToProps)
+)(MyVerticallyCenteredModal)
+
+
+
+const mapStateToPropsForEmploye = (state) => {
+  return {
+    employees: state.firestore.ordered.employees,
+  }
+}
+
+export default compose(
+  connect(mapStateToPropsForEmploye),
+  firestoreConnect([
+    {collection: "employees"}
+  ])
+)(Employee)
