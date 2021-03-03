@@ -83,6 +83,11 @@ class  MyVerticallyCenteredModal extends Component {
 
   render() {
 
+    
+    if(this.props.positions) {
+      console.log(this.props.positions)
+    }
+
 
     return (
       <Modal
@@ -129,13 +134,22 @@ class  MyVerticallyCenteredModal extends Component {
 }
 
 
+const mapStateToProps = (state) => {
+  return {
+    positions: state.firestore.ordered.position
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addEmployee: (employee) => dispatch(addEmployee(employee))
   }
 }
 const NewMyVerticallyCenteredModal = compose(
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    {collection: "position"}
+  ])
 )(MyVerticallyCenteredModal)
 
 

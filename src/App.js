@@ -16,6 +16,8 @@ import SignIn from './components/SignIn/SingIn';
 import { connect } from 'react-redux';
 import EmployeeDetails from './components/Employee/EmployeDetails';
 import ClientDetails from './components/Client/ClientDetails';
+import NewClient from './components/Client/NewClient';
+import NewCar from './components/Cars/NewCar';
 
 function App(props) {
   const {auth} = props 
@@ -38,6 +40,8 @@ function App(props) {
                         <Route  path="/parking" component={ Parking }></Route>
                         <Route  path="/carwash" component={ AutoWash }></Route>
                         <Route  path="/clients" component={ Client }></Route>
+                        <Route path="/newClient" component= {NewClient}></Route>
+                        <Route path="/newCar/:userId" component= { NewCar }></Route>
                         <Route  path="/clientdetails/:id" component={ ClientDetails }></Route>
                         <Route  path="/employee" component={ Employee }></Route>
                         <Route path="/employeedetails/:id" component={ EmployeeDetails }></Route>
@@ -54,8 +58,10 @@ function App(props) {
 }
 
 const mapStateToProps = (state) => {
+
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    
   }
 }
 

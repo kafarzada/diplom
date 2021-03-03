@@ -3,15 +3,19 @@ import { firebaseReducer } from "react-redux-firebase";
 import { combineReducers } from "redux";
 import { firestoreReducer } from "redux-firestore";
 import AuthReducer from "./authReducer";
+import CarReducer from "./carReducer";
 import clientReducer from "./clientReducer";
 import EmployeeReducer from "./employeeReducer";
+import {reducer as formReducer} from "redux-form"
 
 const rootReducer = combineReducers({
     auth: AuthReducer,
     client: clientReducer,
+    car: CarReducer,
     employeeReducer: EmployeeReducer,
     firestore: firestoreReducer,
-    firebase: firebaseReducer
+    firebase: firebaseReducer,
+    form: formReducer
 })
 
 

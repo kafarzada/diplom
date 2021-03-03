@@ -1,17 +1,18 @@
 export const addClient = (newClient) => {
-    return (dispatch, getState, {getFireStore}) => {
-        const firestore = getFireStore()
+    return (dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
 
-        const {firstname, lastname, patronomic, phone, age} = newClient
+        const {firstname, lastname, patronymic, phone, age} = newClient
 
         firestore.collection('client').add({
             firstname,
             lastname,
-            patronomic,
+            patronymic,
             phone,
             age,
             scope: 0,
-            cars: 0
+            cars: 0,
+            registrationDate: new Date()
         }).then((client) => {
             dispatch({ type: "ADD_NEW_CLIENT_SUCCES", client })
         }).catch((err) => {
@@ -23,22 +24,35 @@ export const addClient = (newClient) => {
 export const removeClient = (id) => {
     return (dispatch, getState, {getFirestore} ) => {
         const firestore = getFirestore()
-        
-        firestore.collection("client").doc(id).delete()
-            .then(() => {
-                dispatch({ type: "REMOVE_CLIENT_SUCCESS" })
 
-                // const query  = firestore.collection().doc("car").where("clientId", "==", id)
-                // query.get().then((q) => {
-                //     q.forEach((doc) => {
-                //         doc.ref.delete()
-                //     })
-                // })
+         firestore.collection('client').doc(id).delete()
+            .then(() => {
+                dispatch({type: "REMOVE_CLIENT_SUCCESS"})
             })
             .catch((err) => {
-                dispatch({ type: "REMOVE_CLIENT_ERROR", err })
+                dispatch({type: "REMOVE_CLIENT_ERROR"}, err)
             })
+    }
+}
 
 
+export const addCar = (newCar) => {
+    return (dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
+
+        const userCollectionRef = firestore.collection('client').doc(newCar.userId)
+        
+        userCollectionRef.collection('cars').add({
+            marka: newCar.marka,
+            model: newCar.model,
+            gosNumber: newCar.gosNumber
+        })
+        .then(result => {
+            console.log("success")
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
     }
 }
