@@ -2,7 +2,7 @@ export const addClient = (newClient) => {
     return (dispatch, getState, {getFirestore}) => {
         const firestore = getFirestore()
 
-        const {firstname, lastname, patronymic, phone, age} = newClient
+        const {firstname, lastname, patronymic, phone, age, sex} = newClient
 
         firestore.collection('client').add({
             firstname,
@@ -10,6 +10,7 @@ export const addClient = (newClient) => {
             patronymic,
             phone,
             age,
+            sex,
             scope: 0,
             cars: 0,
             registrationDate: new Date()

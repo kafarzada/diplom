@@ -1,49 +1,98 @@
 import React, { Component, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 import { addClient } from '../../store/actions/clientActions'
 import s from "./FormStyle.module.css"
 
 
 class NewClient extends Component {
     
-    state = {
-        firstname: '',
-        lastname: '',
-        patronymic: "",
-        phone: "",
-        age: '',
-        cars: 0,
-        scope: 0,
-        registrationDate: new Date()
+    // state = {
+    //     firstname: '',
+    //     lastname: '',
+    //     patronymic: "",
+    //     phone: "",
+    //     age: '',
+    //     cars: 0,
+    //     scope: 0,
+    //     registrationDate: new Date()
+    // }
+
+
+    onSubmit = (data) => {
+        
+        data.cars = 0;
+        data.scope = 0
+        data.registrationDate = new Date()
+        this.addNewClient(data)
     }
 
-     hadlerChange = (e) => {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
-
-    addNewClient = () => {
-        this.props.addClient(this.state)
+    addNewClient = (data) => {
+        this.props.addClient(data)
         this.props.history.goBack()
     }
     render() {
         return (
-            <div className={s.formContaienr}> 
-            <h1 className={s.formTitle} >Новый Пользователь</h1>
-            <form>
-                 <input className={s.inputStyle} type="text" placeholder="Фамилия" id="firstname" onChange={this.hadlerChange}/>
-                 <input className={s.inputStyle} type="text" placeholder="Имя" id="lastname" onChange={this.hadlerChange}/>
-                 <input className={s.inputStyle} type="text" placeholder="Отчество" id="patronymic" onChange={this.hadlerChange}/>
-                 <input className={s.inputStyle} type="text" placeholder="Контактный номер" id="phone" onChange={this.hadlerChange}/>
-                 <input className={s.inputAge} type="number" placeholder="Возраст" id="age" onChange={this.hadlerChange}/>
-                 <Button onClick={this.addNewClient} >Добавить</Button>
-            </form>
-        </div>
+            <div>
+                <h1>Новый Клиент</h1>
+                <NewClientForm onSubmit={this.onSubmit}/>
+            </div>
         )
     }
 }
+
+const NewClientFormTemp = (props) => {
+    return (
+            <form onSubmit={props.handleSubmit}>
+
+                <div>
+                    <Field component={'input'} name="firstname" placeholder="Фамилия" />
+                </div>
+                <div>
+                    <Field component={'input'} name="lastname" placeholder="Имя" />
+                </div>
+                <div>
+                    <Field component={'input'} name="patronymic" placeholder="Отчество" />
+                </div>
+
+                <div>
+                    <Field component={'input'} name="age" placeholder="Возраст" />
+                </div>
+
+
+                <div>
+                    <label>Пол</label>
+                    <div>
+                    <label>
+                        <Field name="sex" component="input" type="radio" value="Мужчина" />{' '}
+                        Мужчина
+                    </label>
+                    <label>
+                        <Field name="sex" component="input" type="radio" value="Женщина" />{' '}
+                        Женщина
+                    </label>
+                    <label>
+                        <Field name="sex" component="input" type="radio" value="другое" />{' '}
+                        Другое
+                    </label>
+                    </div>
+                </div>
+
+                <div>
+                    <Field component={'input'} name="phone" placeholder="Номер Телефона" />
+                </div>
+
+                <Button type="submit">Добавить Клиента</Button>
+                
+            </form>
+    )
+}
+
+
+const NewClientForm = reduxForm({
+    form: "newClient"
+})(NewClientFormTemp)
 
 
 

@@ -8,7 +8,6 @@ import { compose } from 'redux';
 import { addEmployee } from '../../store/actions/employeeActions';
 
 const Employee = (props) => {
-  const [modalShow, setModalShow] = React.useState(false);
   const {employees} = props
   const {positions} = props
 
@@ -31,7 +30,7 @@ const Employee = (props) => {
     return (
       <div>
             <Row>
-                <Col><Button onClick={() => setModalShow(true)}>Добавить Сотрудника</Button></Col>
+                <Col> <Link to="newemployee"><Button>Добавить Сотрудника</Button></Link></Col>
             </Row>
             <Row>
             <Table striped bordered hover>
@@ -51,106 +50,19 @@ const Employee = (props) => {
               </tbody>
             </Table>
             </Row>
-            <NewMyVerticallyCenteredModal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-              positions={positions}
-            />
       </div>
               
     )
 }
-class  MyVerticallyCenteredModal extends Component {
-  state = {
-    firstName: '',
-    lastName: '',
-    patronymic: "",
-    phone: "",
-  }
-
-  handlerSubmit = (e) => {
-    e.preventDefault()
-    this.props.addEmployee(this.state)
-
-  }
-
-  hadlerChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    })
-  }
 
 
-  render() {
 
-    
-    if(this.props.positions) {
-      console.log(this.props.positions)
-    }
-
-
-    return (
-      <Modal
-        {...this.props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Новый Сотрудник
-          </Modal.Title>
-        </Modal.Header>
-          <h4>ДАнные сотрудника</h4>
-          <form onSubmit={this.handlerSubmit}>
-            <Modal.Body>
-                <div>
-                  <input type="text" placeholder="Фамилия" id="firstName" onChange={this.hadlerChange}/>
-                </div>
-                <div>
-                  <input type="text" placeholder="Имя" id="lastName" onChange={this.hadlerChange}/>
-                </div>
-                <div>
-                  <input type="text" placeholder="Отчество" id="patronymic" onChange={this.hadlerChange}/>
-                </div>
-
-                <div>
-                  <input type="text" placeholder="Контактный номер" id="phone" onChange={this.hadlerChange}/>
-                </div>
-                <div>
-
-                </div>
-             </Modal.Body>
-            <Modal.Footer>
-              <Button variant={"outline-secondary"} onClick={this.props.onHide}>Закрыть</Button>
-              <Button variant="primary" type="submit" onClick={this.props.onHide}>Создать</Button>
-            </Modal.Footer>
-          </form>
-        
-
-      </Modal>
-    );
-  }
-}
-
-
-const mapStateToProps = (state) => {
-  return {
-    positions: state.firestore.ordered.position
-  }
-}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     addEmployee: (employee) => dispatch(addEmployee(employee))
   }
 }
-const NewMyVerticallyCenteredModal = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([
-    {collection: "position"}
-  ])
-)(MyVerticallyCenteredModal)
 
 
 

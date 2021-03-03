@@ -36,7 +36,7 @@ const Client = (props) => {
                       <td>{index + 1}</td>
                       <td><Link to={'/clientdetails/' + client.id}>{client.firstname}</Link> </td>
                       <td>{client.lastname}</td>
-                      <td>{client.patronomic}</td>
+                      <td>{client.patronymic}</td>
                       <td>{client.cars}</td>
                     </tr>
                   )

@@ -66,6 +66,7 @@ const NewCarF = (props) => {
             <div>
                 <div className={s.selectLabel}>Выберите Макру:</div>
                 <Field component="select" onChange={props.onChangeSelectBrand} name="marka" className={s.selectForm}>
+                    <option></option>
                     {props.bradsOprions} 
                 </Field>
 
@@ -76,11 +77,14 @@ const NewCarF = (props) => {
                     <option></option>
                     {props.models}
                 </Field>
+
             </div>
             <div>
                 
             </div>
-            <Field component="input" placeholder="укажите номера транспорта" name="gosNumber"  className={s.inputStyle}/>
+            <Field component="input" placeholder="укажите номера транспорта" name="gosNumber"  className={s.inputStyle} />
+
+
             <Button type="submit">Добавить Транспорт</Button> 
         </form> 
     )

@@ -19,12 +19,12 @@ const ClientDetails = (props) => {
         return (
             <div>
                <div>
-                    <div>{client.firstname}</div>
-                    <div>{client.lastname}</div>
-                    <div>{client.patronymic}</div>
-                    <div>{client.phone}</div>
-                    <div>{client.cars} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
-                    <div>{client.scope}</div>
+                    <div><span>Фамилия:</span>{client.firstname}</div>
+                    <div><span>Имя:</span>{client.lastname}</div>
+                    <div><span>Отчество:</span>{client.patronymic}</div>
+                    <div><span>Контактный Номер: </span>{client.phone}</div>
+                    <div><span>Количсетво Транспорта:</span>{client.cars} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
+                    <div><span>Баланс:</span>{client.scope}</div>
                     <Button variant={'danger'} onClick={() => {onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
                </div>
             </div>
@@ -41,6 +41,7 @@ const ClientDetails = (props) => {
 
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state.firestore.data.client)
     const id = ownProps.match.params.id
     const clients = state.firestore.data.client
     const client = clients ? clients[id]: null
