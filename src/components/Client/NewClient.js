@@ -95,7 +95,6 @@ const NewClientForm = reduxForm({
 })(NewClientFormTemp)
 
 
-
 const mapDispatchToProps=(dispatch) => {
     return {
         addClient: (newClient) => dispatch(addClient(newClient))

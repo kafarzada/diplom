@@ -1,0 +1,86 @@
+.homeContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+}
+
+
+.mainContent {
+    flex: 0 0 80%;
+}
+
+.notifications {
+    flex: 0 0 20%;
+}
+
+.Row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgb(245, 245, 245);
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.card {
+    width: 150px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgb(141, 141, 141);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+}
+
+.cardTitle {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.cardImg {
+    width: 100px;
+    height: 100px;
+    background-image: url("avatar.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+.carImg {
+    width: 100px;
+    height: 100px;
+    background-image: url("car.jpg");
+    background-position: center;
+    background-size: 80px ;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+.usersTitle {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+.carsTitle {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.carTitle {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.carStatus {
+    font-weight: bold;
+    font-size: 12px;
+    color: rgb(148, 148, 148);
+}

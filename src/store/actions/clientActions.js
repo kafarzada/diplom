@@ -57,3 +57,42 @@ export const addCar = (newCar) => {
         
     }
 }
+
+
+export const getCars = (idUser) => {
+    return (dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
+        const userDocRef = firestore.collection("client").doc(idUser)
+
+        const carCollection =  userDocRef.collection("cars")
+
+        carCollection.get().then(cars => {
+            const c =  []
+            cars.forEach(car => {
+
+                c.push({ id: car.id, car: car.data() })
+            })
+            dispatch({ type: "GET_CARS_SUCCESS", c })
+        })
+        .catch(err => {
+            dispatch({ type: "GET_CARS_ERR", err })
+        })
+
+    }
+}
+
+
+export const removeCar = (idCar, idUser) => {
+    return (dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
+        const userDocRef = firestore.collection("client").doc(idUser)
+
+        const carDocRef =  userDocRef.collection("cars").doc(idCar).delete()
+            .then(() => {
+                dispatch({type: "CAR_REMOVE_SUCCESS"})
+            })
+            .catch(err => {
+                dispatch({type: "CAR_REMOVE_ERR", err})
+            })
+    }
+}

@@ -1,0 +1,28 @@
+.transport__items {
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px 0px 10px rgb(189, 189, 189);
+    border-radius: 20px;
+    max-width: 500px;
+    padding: 1em;
+    margin: 1em;
+}
+
+.transportImg {
+    flex: 0 0 20%;
+}
+
+.transport_info {
+    flex:  0 0 80%;
+}
+
+.transport_info p span {
+    font-weight: bold;
+    
+}
+
+.transportDelete {
+    display: flex;
+    justify-content: flex-end;
+}
+

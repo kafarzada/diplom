@@ -1,0 +1,17 @@
+.transports {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.emptyTransport {
+    color: rgb(121, 121, 121);
+    font-size: 14px;
+    
+}
+
+.client__ingo span{
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 10px;
+}

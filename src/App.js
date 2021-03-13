@@ -37,7 +37,7 @@ function App(props) {
                     </Col>
                     <Col sm={9} className="page">
                       <Switch>
-                        <Route exact path="/main" component={Home}></Route>
+                        <Route exact path="/" component={Home}></Route>
                         <Route  path="/parking" component={ Parking }></Route>
                         <Route  path="/carwash" component={ AutoWash }></Route>
                         <Route  path="/clients" component={ Client }></Route>

@@ -1,65 +1,106 @@
 
-import React from 'react'
+import React, { Component } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { removeClient } from '../../store/actions/clientActions'
+import { getCars, removeCar, removeClient } from '../../store/actions/clientActions'
+import s from "./ClientDetail.module.css"
+import Transport from './Transport'
 
-const ClientDetails = (props) => {
-    const {client, id} = props
+class ClientDetails extends Component {
+    
 
-    const onClickHandlerRemoveCLient = (id) => {
+     onClickHandlerRemoveCLient = (id) => {
         
-        props.removeClient(id)
-        props.history.goBack()
+        this.props.removeClient(id)
+        this.props.history.goBack()
     }
-    if(client && id) {
-        return (
-            <div>
-               <div>
-                    <div><span>Фамилия:</span>{client.firstname}</div>
-                    <div><span>Имя:</span>{client.lastname}</div>
-                    <div><span>Отчество:</span>{client.patronymic}</div>
-                    <div><span>Контактный Номер: </span>{client.phone}</div>
-                    <div><span>Количсетво Транспорта:</span>{client.cars} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
-                    <div><span>Баланс:</span>{client.scope}</div>
-                    <Button variant={'danger'} onClick={() => {onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
-               </div>
-            </div>
-        )
-    } else {
-        return (
-            <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-        )
+
+
+
+    componentDidMount() {
+        this.props.getCars(this.props.id)
+    }
+
+    
+    render() {
+        const {client, id, totalCar} = this.props
+        if(client && id) {
+            return (
+                <div>
+                   <div className={s.client__ingo}>
+                        <h1>Клиент</h1>
+                        <div><span>Фамилия:</span>{client.firstname}</div>
+                        <div><span>Имя:</span>{client.lastname}</div>
+                        <div><span>Отчество:</span>{client.patronymic}</div>
+                        <div><span>Контактный Номер: </span>{client.phone}</div>
+                        <div><span>Количсетво Транспорта:</span>{this.props.cars.length} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
+                        <div><span>Баланс:</span>{client.scope}</div>
+                        <Button variant={'danger'} onClick={() => {this.onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
+                   </div>
+                   <hr></hr>
+                   <div>
+                       <h3>Транспорты</h3>
+                       <div className={s.transports}>
+    
+                            {
+                                totalCar ===0 ? <p className={s.emptyTransport}>Нет траспорта...</p> :
+    
+                                this.props.cars.map((car, index) => {
+                                    return <Transport key={index} car={car} carId={car.id} userId={id} removeCar={this.props.removeCar}/>
+                                })
+    
+    
+                            }
+    
+                       </div>
+                   </div>
+                </div>
+            )
+        } else {
+            return (
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            )
+        }
     }
 
 }
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state.firestore.data.client)
+    console.log(state.firestore.data)
     const id = ownProps.match.params.id
     const clients = state.firestore.data.client
     const client = clients ? clients[id]: null
     return {    
         id,
-        client
+        client,
+        cars: state.client.cars,
+        totalCar: state.client.totalCar
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        removeClient: (id) => dispatch(removeClient(id))
+        removeClient: (id) => dispatch(removeClient(id)),
+        getCars: (uesrId) => dispatch(getCars(uesrId)),
+        removeCar: (carId, userId) => dispatch(removeCar(carId, userId))
     }
 }   
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        {collection: "client"}
+        {
+            collection: "client",
+
+        },
+        {
+            collection: "cars"
+        }
     ])
 )(ClientDetails)
