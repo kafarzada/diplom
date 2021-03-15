@@ -7,8 +7,10 @@ import CarReducer from "./carReducer";
 import clientReducer from "./clientReducer";
 import EmployeeReducer from "./employeeReducer";
 import {reducer as formReducer} from "redux-form"
+import mainReducer from "./mainReducer";
 
 const rootReducer = combineReducers({
+    main: mainReducer,
     auth: AuthReducer,
     client: clientReducer,
     car: CarReducer,

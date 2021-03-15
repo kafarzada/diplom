@@ -42,14 +42,23 @@ export const addCar = (newCar) => {
         const firestore = getFirestore()
 
         const userCollectionRef = firestore.collection('client').doc(newCar.userId)
+        const carCollectionRef = firestore.collection('cars')
         
         userCollectionRef.collection('cars').add({
             marka: newCar.marka,
             model: newCar.model,
-            gosNumber: newCar.gosNumber
+            gosNumber: newCar.gosNumber,
+            status: false
         })
         .then(result => {
             console.log("success")
+            carCollectionRef.add({
+                marka: newCar.marka,
+                model: newCar.model,
+                gosNumber: newCar.gosNumber,
+                userID: newCar.userId,
+                status: false
+            })
         })
         .catch(err => {
             console.log(err)

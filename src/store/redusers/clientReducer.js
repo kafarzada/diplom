@@ -1,4 +1,4 @@
-const initState = {
+    const initState = {
     totalCar:0,
     cars: []
 }

@@ -19,7 +19,7 @@ const Header = (props) => {
             <h1>LOGO</h1>
             <div className={s.header__nav}>
                 {
-                    auth.uid ? <Link onClick={onClickHadnlerOut}>Выйти</Link>
+                    auth.uid ? <Link onClick={onClickHadnlerOut}><i class="bi bi-box-arrow-left"></i></Link>
                              :<Link to="/signin">Войти</Link>
                 }
             </div>

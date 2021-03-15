@@ -1,7 +1,6 @@
 .homeContainer {
     display: flex;
     flex-direction: row;
-    padding: 40px;
 }
 
 
@@ -18,6 +17,7 @@
     flex-direction: row;
     justify-content: space-around;
     background-color: rgb(245, 245, 245);
+    box-shadow: 0px 0px 10px rgb(189, 179, 221);
     padding: 20px;
     border-radius: 20px;
 }
@@ -25,7 +25,7 @@
 .card {
     width: 150px;
     border-radius: 20px;
-    box-shadow: 0px 0px 10px rgb(141, 141, 141);
+    box-shadow: 0px 0px 10px rgb(86, 62, 165);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,4 +83,25 @@
     font-weight: bold;
     font-size: 12px;
     color: rgb(148, 148, 148);
+}
+
+.notifications_wrapper {
+    width: 90%;
+    min-height: 200px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgb(189, 179, 221);
+    margin: 0 auto;
+    padding: 0.6em;
+}
+
+.notifications_wrapper h4 {
+    font-weight: bold;
+}
+
+.inside {
+    color: chartreuse;
+}
+
+.outside {
+    color: red;
 }
