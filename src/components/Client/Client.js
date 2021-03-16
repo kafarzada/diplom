@@ -11,7 +11,6 @@ import OwnTable from '../layout/OwnTable';
 const Client = (props) => {
 
   const {clients} = props
-  
 
   return (
     <div>

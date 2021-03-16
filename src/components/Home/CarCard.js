@@ -2,7 +2,6 @@ import React from 'react'
 import s from "./Home.module.css"
 
 const CarCard = (props) => {
-    console.log(props)
     return (
     <div className={s.card}>
         <div className={s.carImg}>

@@ -8,6 +8,7 @@ import { compose } from 'redux'
 import { getCars, removeCar, removeClient } from '../../store/actions/clientActions'
 import s from "./ClientDetail.module.css"
 import Transport from './Transport'
+import moment from "moment"
 
 class ClientDetails extends Component {
     
@@ -26,7 +27,9 @@ class ClientDetails extends Component {
 
     
     render() {
+        
         const {client, id, totalCar} = this.props
+        console.log(client)
         if(client && id) {
             return (
                 <div>
@@ -36,6 +39,7 @@ class ClientDetails extends Component {
                         <div><span>Имя:</span>{client.lastname}</div>
                         <div><span>Отчество:</span>{client.patronymic}</div>
                         <div><span>Контактный Номер: </span>{client.phone}</div>
+                        <div><span>Дата Регистрации: </span>{moment(client.registrationDate.toDate().toString()).calendar()}</div>
                         <div><span>Количсетво Транспорта:</span>{this.props.cars.length} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
                         <div><span>Баланс:</span>{client.scope}</div>
                         <Button variant={'danger'} onClick={() => {this.onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
@@ -72,7 +76,6 @@ class ClientDetails extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state.firestore.data)
     const id = ownProps.match.params.id
     const clients = state.firestore.data.client
     const client = clients ? clients[id]: null
@@ -96,7 +99,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         {
-            collection: "client",
+            collection: "client"
 
         },
         {

@@ -48,7 +48,9 @@ export const addCar = (newCar) => {
             marka: newCar.marka,
             model: newCar.model,
             gosNumber: newCar.gosNumber,
-            status: false
+            status: true,
+            addedDate: new Date(),
+            
         })
         .then(result => {
             console.log("success")
@@ -57,7 +59,10 @@ export const addCar = (newCar) => {
                 model: newCar.model,
                 gosNumber: newCar.gosNumber,
                 userID: newCar.userId,
-                status: false
+                status: true,
+                timeOfEntry: new Date(),
+                addedDate: new Date(),
+                chekOutTime: null
             })
         })
         .catch(err => {
@@ -96,8 +101,9 @@ export const removeCar = (idCar, idUser) => {
         const firestore = getFirestore()
         const userDocRef = firestore.collection("client").doc(idUser)
 
-        const carDocRef =  userDocRef.collection("cars").doc(idCar).delete()
+        userDocRef.collection("cars").doc(idCar).delete()
             .then(() => {
+                const shapshot = firestore.collection('cars').where("userID", "=", idUser)
                 dispatch({type: "CAR_REMOVE_SUCCESS"})
             })
             .catch(err => {

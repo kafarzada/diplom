@@ -12,7 +12,6 @@ const Navbar = () => {
             <li className="nav__item"><Link to="/employee">Сотрудники</Link></li>   
             <li className="nav__item"><Link to="/history">История платежей</Link></li>   
             <li className="nav__item"><Link to="/settings">Настройки</Link></li>   
-
         </ul>
     )
 }

@@ -1,14 +1,17 @@
 import React from 'react'
 import { Component } from 'react'
 import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
 import { getCars, getUsers } from '../../store/actions/mainActions'
 import CarCard from './CarCard'
 import s from "./Home.module.css"
+import Notification from './Notification'
 import UserCard from './UserCard'
+
 class Home extends Component {
     componentDidMount() {
-        this.props.getUsers()
-        this.props.getCars()
+
     }
     render() {
         return (
@@ -35,28 +38,30 @@ class Home extends Component {
                     </div>
                 </div>
                 
-                <div className={s.notifications}>
-                    <div className={s.notifications_wrapper}>
-                        <h4>Уведомления</h4>
-                    </div>
-                </div>
+                <Notification />
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => {
+    console.log(state)
     return {
-        users: state.main.users,
-        cars: state.main.cars
+        users: state.firestore.ordered.client,
+        cars: state.firestore.ordered.cars
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUsers: () => dispatch( getUsers() ),
-        getCars: () => dispatch(getCars() )
+
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect([
+        {collection: 'cars', limit: 3, orderBy: "addedDate"},
+        {collection: 'client', limit: 3}
+    ])
+)(Home)
