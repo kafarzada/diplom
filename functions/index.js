@@ -22,16 +22,26 @@ exports.createdCar = functions.firestore
         .document('cars/{carId}')
         .onCreate(doc => {
 
-        const car = doc.data();
+            const car = doc.data();
+            let userfirstname = undefined
+            let userlastname = undefined
 
-        
-        const notification = {
-            content: "Добавил(а) Транспорт",
-            user: `${car.userID}`,
-            time: admin.firestore.FieldValue.serverTimestamp()
-        }
+            admin.firestore().collection('client')
+                .doc(car.userID)
+                .get()
+                .then(d => {
 
-        return createNotification(notification)
+                    userfirstname = d.data().firstname
+                    userlastname = d.data().lastname
+
+                    const notification = {
+                        content: "Добавил(а) Транспорт",
+                        user: `${userfirstname} ${userlastname}`,
+                        time: admin.firestore.FieldValue.serverTimestamp()
+                    }
+
+                    return createNotification(notification)  
+                })
 })
 
 exports.userJoined = functions.auth.user().onCreate(user => {

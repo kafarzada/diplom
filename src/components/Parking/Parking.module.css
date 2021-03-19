@@ -1,0 +1,66 @@
+.Parking__inner {
+    display:  flex;
+    flex-direction: row;
+    padding: 1em;
+    flex-wrap: wrap;
+}
+
+.Parking h2 {
+    margin: 1em;
+    margin-bottom: 0;
+}
+
+.parkink__item {
+    width: 100px;
+    min-height: 130px;
+    background-color: rgb(6, 10, 61);
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(4, 3, 59, 0.425);
+    margin: 20px;
+    color: white;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s;
+}
+.parkink__item:hover {
+    transform: scale(1.2 );
+}
+
+.open {
+    background-color: white;
+    border: 1px dashed black;
+    color: black;
+    flex-direction: column;
+    text-align: center;
+}
+
+.open div {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Parking__item_add {
+    width: 100px;
+    min-height: 130px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(4, 3, 59, 0.425);
+    margin: 20px;
+    border: 1px dashed black;
+    user-select: none;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.575);
+    flex-direction: column;
+}
+
+.parking__model {
+    color: white;
+}

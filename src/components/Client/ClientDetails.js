@@ -22,14 +22,13 @@ class ClientDetails extends Component {
 
 
     componentDidMount() {
-        this.props.getCars(this.props.id)
+     //   this.props.getCars(this.props.id)
     }
 
     
     render() {
         
         const {client, id, totalCar} = this.props
-        console.log(client)
         if(client && id) {
             return (
                 <div>
@@ -40,7 +39,7 @@ class ClientDetails extends Component {
                         <div><span>Отчество:</span>{client.patronymic}</div>
                         <div><span>Контактный Номер: </span>{client.phone}</div>
                         <div><span>Дата Регистрации: </span>{moment(client.registrationDate.toDate().toString()).calendar()}</div>
-                        <div><span>Количсетво Транспорта:</span>{this.props.cars.length} <Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
+                        <div><span>Количсетво Транспорта:</span>{this.props.totalCar }<Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
                         <div><span>Баланс:</span>{client.scope}</div>
                         <Button variant={'danger'} onClick={() => {this.onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
                    </div>
@@ -79,11 +78,15 @@ const mapStateToProps = (state, ownProps) => {
     const id = ownProps.match.params.id
     const clients = state.firestore.data.client
     const client = clients ? clients[id]: null
+    const cars = state.firestore.ordered.cars
+    
+    const newCarList = cars ? cars.filter(item => item.userID == id): []
+    console.log(newCarList)
     return {    
         id,
         client,
-        cars: state.client.cars,
-        totalCar: state.client.totalCar
+        cars: newCarList,
+        totalCar: newCarList.length
     }
 }
 

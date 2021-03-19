@@ -38,7 +38,7 @@ class Home extends Component {
                     </div>
                 </div>
                 
-                <Notification />
+                <Notification notifications={this.props.notifications} />
             </div>
         )
     }
@@ -48,7 +48,8 @@ const mapStateToProps = (state) => {
     console.log(state)
     return {
         users: state.firestore.ordered.client,
-        cars: state.firestore.ordered.cars
+        cars: state.firestore.ordered.cars,
+        notifications: state.firestore.ordered.notifications
     }
 }
 
@@ -62,6 +63,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         {collection: 'cars', limit: 3, orderBy: "addedDate"},
-        {collection: 'client', limit: 3}
+        {collection: 'client', limit: 3},
+        {collection: "notifications", limit: 10, orderBy: "time"}
     ])
 )(Home)

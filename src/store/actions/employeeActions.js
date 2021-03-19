@@ -2,7 +2,7 @@ export const addEmployee = (employee) => {
     return (dispatch, getState, {getFirestore}) => {
 
         const firestore = getFirestore()
-        console.log(employee)
+        
         firestore.collection('employees').add({
             firstname: employee.firstname,
             lastname: employee.lastname,
@@ -10,6 +10,7 @@ export const addEmployee = (employee) => {
             phone: employee.phone,
             position: employee.position,
             startAt: new Date(),
+
         }).then( (employee) => {
             dispatch({type: "ADD_EMPLOYEE_SUCCESS", employee})
         }).catch((err) => {

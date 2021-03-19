@@ -41,21 +41,8 @@ export const addCar = (newCar) => {
     return (dispatch, getState, {getFirestore}) => {
         const firestore = getFirestore()
 
-        const userCollectionRef = firestore.collection('client').doc(newCar.userId)
-        const carCollectionRef = firestore.collection('cars')
-        
-        userCollectionRef.collection('cars').add({
+        firestore.collection('cars').add({
             marka: newCar.marka,
-            model: newCar.model,
-            gosNumber: newCar.gosNumber,
-            status: true,
-            addedDate: new Date(),
-            
-        })
-        .then(result => {
-            console.log("success")
-            carCollectionRef.add({
-                marka: newCar.marka,
                 model: newCar.model,
                 gosNumber: newCar.gosNumber,
                 userID: newCar.userId,
@@ -63,12 +50,14 @@ export const addCar = (newCar) => {
                 timeOfEntry: new Date(),
                 addedDate: new Date(),
                 chekOutTime: null
-            })
+        })
+        .then(car => {
+            dispatch({ type: "ADD_NEW_CAR"})
         })
         .catch(err => {
-            console.log(err)
+            dispatch({ type: "ADD_NEW_CAR_ERROR", msg: err.message})
         })
-        
+
     }
 }
 
@@ -99,11 +88,9 @@ export const getCars = (idUser) => {
 export const removeCar = (idCar, idUser) => {
     return (dispatch, getState, {getFirestore}) => {
         const firestore = getFirestore()
-        const userDocRef = firestore.collection("client").doc(idUser)
-
-        userDocRef.collection("cars").doc(idCar).delete()
+        const userDocRef = firestore.collection("cars").doc(idCar).delete()
             .then(() => {
-                const shapshot = firestore.collection('cars').where("userID", "=", idUser)
+                //const shapshot = firestore.collection('cars').where("userID", "=", idUser)
                 dispatch({type: "CAR_REMOVE_SUCCESS"})
             })
             .catch(err => {

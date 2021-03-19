@@ -5,11 +5,11 @@
 
 
 .mainContent {
-    flex: 0 0 80%;
+    flex: 0 0 70%;
 }
 
 .notifications {
-    flex: 0 0 20%;
+    flex: 0 0 30%;
 }
 
 .Row {
@@ -104,4 +104,24 @@
 
 .outside {
     color: red;
+}
+
+.notification {
+    font-size: 14px;
+    padding: 1em;
+    box-shadow: 0px 0px 10px rgb(189, 179, 221);
+    border-radius: 20px;
+    margin-bottom: 0.5em;
+}
+
+.notification__time {
+    color: rgb(90, 90, 90);
+    font-size: 10px;
+}
+
+.notification__content span,
+ .notification__user span,
+ .notification__time span {
+    font-weight: bold;
+    color: black;
 }
