@@ -88,13 +88,22 @@ export const getCars = (idUser) => {
 export const removeCar = (idCar, idUser) => {
     return (dispatch, getState, {getFirestore}) => {
         const firestore = getFirestore()
-        const userDocRef = firestore.collection("cars").doc(idCar).delete()
+        firestore.collection("cars").doc(idCar).delete()
             .then(() => {
-                //const shapshot = firestore.collection('cars').where("userID", "=", idUser)
-                dispatch({type: "CAR_REMOVE_SUCCESS"})
-            })
-            .catch(err => {
-                dispatch({type: "CAR_REMOVE_ERR", err})
+                         
+                 firestore.collection('car').where("userID", '==', idUser).
+                get().set({
+                    userID: null,
+                    isBusy: false,
+                }, {merge: true})
+                .then(() => {
+                    dispatch({type: "CAR_REMOVE_SUCCESS"})
+                })
+                .catch(err => {
+                    dispatch({type: "CAR_REMOVE_ERR", err})
+                })
+                
+
             })
     }
 }
