@@ -64,6 +64,6 @@ export default compose(
     firestoreConnect([
         {collection: 'cars', limit: 3, orderBy: "addedDate"},
         {collection: 'client', limit: 3},
-        {collection: "notifications", limit: 10, orderBy: "time"}
+        {collection: "notifications", limit: 5,  orderBy: ["time","desc"]}
     ])
 )(Home)
