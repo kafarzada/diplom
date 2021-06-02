@@ -29,7 +29,9 @@ const EmployeeDetails = (props) => {
                         <li className={s.info__item}> <span>Фамилия:</span>{employee.lastname}</li>
                         <li className={s.info__item}> <span>Отчество:</span>{employee.patronymic}</li>
                         <li className={s.info__item}> <span>Контактный номер:</span>{employee.phone}</li>
+                        <li className={s.info__item}> <span>Должность:</span>{employee.position}</li>
                         <li className={s.info__item}> <span>Работает с:</span>{moment(employee.startAt.toDate().toString()).calendar()}</li>
+                        <li className={s.info__item}> <span>Количество выполненых Заявок:</span>{employee.orderCount}</li>
                     </ul>
                     <div className={s.employe_delete_row}>
                         <Button onClick={() => {onClickHandlerDelete(props.id)}} variant={"danger"}>Удалить сотрудника</Button>

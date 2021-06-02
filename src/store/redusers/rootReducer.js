@@ -19,6 +19,7 @@ const rootReducer = combineReducers({
     employeeReducer: EmployeeReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer,
+    //firestore: createFirestoreInstance
     form: formReducer
 })
 

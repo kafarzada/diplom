@@ -26,3 +26,32 @@ export const changeStatus = (status, id) => {
         })
     }
 }
+
+export const chooseEmployee= (OrderId, employeeId) => {
+    return (dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
+
+        const employees = []
+        
+        employeeId.forEach(employee => {
+            firestore.collection("employees").doc(employee).get()
+                .then(e => {
+
+                    firestore.collection("employees").doc(e.id).update({
+                        status: true
+                    })
+
+                    const firstname = e.data().firstname,
+                        lastname = e.data().lastname;
+                    employees.push({id: e.id, firstname, lastname})
+                    firestore.collection('orders').doc(OrderId).update({
+                        employees
+                    })
+                })
+                .catch(
+
+                )
+            
+        })
+    }
+}

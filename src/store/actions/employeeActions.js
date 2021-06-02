@@ -10,6 +10,8 @@ export const addEmployee = (employee) => {
             phone: employee.phone,
             position: employee.position,
             startAt: new Date(),
+            orderCount: 0,
+            status: false
 
         }).then( (employee) => {
             dispatch({type: "ADD_EMPLOYEE_SUCCESS", employee})

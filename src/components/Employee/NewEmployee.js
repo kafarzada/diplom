@@ -10,8 +10,9 @@ import s from "../Client/FormStyle.module.css"
 class NewEmployee extends Component {
 
     onSubmit = (data) => {
-        console.log(data)
+        
         this.props.addEmployee(data)
+        this.props.history.goBack()
     }
 
 
