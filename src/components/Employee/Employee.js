@@ -10,6 +10,7 @@ import { addEmployee } from '../../store/actions/employeeActions';
 const Employee = (props) => {
   const {employees} = props
   const {positions} = props
+  
 
     const employeesList = employees && employees.map((employe, index) => {
         return (
@@ -21,6 +22,7 @@ const Employee = (props) => {
               <td>{employe.lastname}</td>
               <td>{employe.patronymic}</td>
               <td>{employe.phone}</td>
+              <td>{employe.orderCount}</td>
               </>
             }
           </tr>
@@ -41,6 +43,7 @@ const Employee = (props) => {
                   <th>Имя</th>
                   <th>Отчество</th>
                   <th>Контактный Номер</th>
+                  <th>Всего заявок</th>
                 </tr>
               </thead>
               <tbody>
@@ -75,6 +78,6 @@ const mapStateToPropsForEmploye = (state) => {
 export default compose(
   connect(mapStateToPropsForEmploye),
   firestoreConnect([
-    {collection: "employees"}
+    {collection: "employees",  orderBy: ["orderCount", "desc"]}
   ])
 )(Employee)

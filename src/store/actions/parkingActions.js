@@ -29,3 +29,14 @@ export const attach = (data) => {
         }, { merge: true })
     }
 }
+
+export const clearPlace = (placeId) => {
+    return ( dispatch, getState, {getFirestore}) => {
+        const firestore = getFirestore()
+
+         firestore.collection('parking').doc(placeId).update({
+             carId: null,
+             isBusy: false
+         })
+    }
+}

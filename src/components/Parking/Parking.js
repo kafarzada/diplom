@@ -86,7 +86,6 @@ const Form = (props) => {
     return (
         <form onSubmit={handleSubmit}>
         <div>
-          <label>Sex</label>
           <div>
 
             {

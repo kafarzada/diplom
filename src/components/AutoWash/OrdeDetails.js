@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { compose } from "redux";
 import {
   chooseEmployee,
+  closeOrder,
   removeOrder,
 } from "../../store/actions/autoWashActions";
 
@@ -33,63 +34,81 @@ const OrderDetail = (props) => {
         <div className={"orderDetailContainer"}>
           <h1>Заявка</h1>
           <div>
-            <div>Дата Создание {order.order_date}</div>
-            <div>Статус: {order.status}</div>
-            {/* <div>Создал: {client&& client.firstname}</div> */}
-            <h5>Обслуживаемые транспорты:</h5>
-            <div>
-              {order.cars &&
-                order.cars.map((car) => (
-                  <div className={"tab"}>
-                    <div>Марка: {car.marka}</div>
-                    <div>Номер транспорта: {car.gosNumber}</div>
-                  </div>
-                ))}
+            <div style={{ marginBottom: "20px" }}>
+              <div>Дата Создание {order.order_date}</div>
+              <div>Статус: {order.status}</div>
+              {/* <div>Создал: {client&& client.firstname}</div> */}
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <h5>Обслуживаемые транспорты:</h5>
+              <div>
+                {order.cars &&
+                  order.cars.map((car) => (
+                    <div className={"tab"}>
+                      <div>Марка: {car.marka}</div>
+                      <div>Номер транспорта: {car.gosNumber}</div>
+                    </div>
+                  ))}
+              </div>
             </div>
 
-            <h5>Услуги:</h5>
-            <div>
-              {order.services &&
-                order.services.map((s) => (
-                  <div className={"tab"}>
-                    <div>{s.name}</div>
-                  </div>
-                ))}
+            <div style={{ marginBottom: "20px" }}>
+              <h5>Услуги:</h5>
+              <div>
+                {order.services &&
+                  order.services.map((s) => (
+                    <div className={"tab"}>
+                      <div>{s.name}</div>
+                    </div>
+                  ))}
+              </div>
             </div>
 
-            <h5>Выберите Автомойщиков:</h5>
-
-            <Button variant={'outline-secondary'}
-              onClick={() => {
-                setOpenEmployeeList(!openEmployeeList);
-              }}
-            >
-              {!openEmployeeList ? "+" : "-"}
-            </Button>
-            {openEmployeeList ? (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                  {
-                    props.employees && props.employees.length == 0 ? <div style={{color: "red"}}>Все сотруднинки заняты</div> :
+            {
+              order.status != "Выполнено"? 
+              <div style={{ marginBottom: "20px" }}>
+              <h5>Выберите Автомойщиков:</h5>
+              <Button
+                variant={"outline-secondary"}
+                onClick={() => {
+                  setOpenEmployeeList(!openEmployeeList);
+                }}
+              >
+                {!openEmployeeList ? "+" : "-"}
+              </Button>
+              {openEmployeeList ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {props.employees && props.employees.length == 0 ? (
+                    <div style={{ color: "red" }}>Все сотруднинки заняты</div>
+                  ) : (
                     <>
-                    <select multiple="multiple" {...register("employees")}>
-                    {props.employees &&
-                      props.employees.map((e) => (
-                        <option
-                          key={e.id}
-                          value={e.id}
-                        >{`${e.firstname} ${e.lastname}`}</option>
-                      ))}
-                  </select>
-                  <input type={"submit"} value={"Назвначить"} /></>
-                  }
-              </form>
-            ) : (
-             null
-            )}
-             {/* <div>{order.employees && order.employees.map((e) => {<Link to={"/employeedetails/"+e.id}>{`${e.firstname} ${e.lastname}`}</Link>})}</div> */}
-             <div>{order.employees && order.employees.map((e) =>{
-               return <Link to={"/employeedetails/"+e.id}>{`${e.firstname} ${e.lastname}`}</Link>
-             })}</div>
+                      <select multiple="multiple" {...register("employees")}>
+                        {props.employees &&
+                          props.employees.map((e) => (
+                            <option
+                              key={e.id}
+                              value={e.id}
+                            >{`${e.firstname} ${e.lastname}`}</option>
+                          ))}
+                      </select>
+                      <input type={"submit"} value={"Назвначить"} />
+                    </>
+                  )}
+                </form>
+              ) : null}
+            </div>: null
+            }
+
+            <div>
+              {order.employees &&
+                order.employees.map((e) => {
+                  return (
+                    <Link
+                      to={"/employeedetails/" + e.id}
+                    >{`${e.firstname} ${e.lastname}`}</Link>
+                  );
+                })}
+            </div>
             <div
               style={{
                 marginTop: "20px",
@@ -98,13 +117,17 @@ const OrderDetail = (props) => {
                 justifyContent: "space-between",
               }}
             >
-              <Button>Закрыть Заявку</Button>
-              <Button
-                variant={"outline-danger"}
-                onClick={() => removeOrder(props.id)}
-              >
-                Удалить
-              </Button>
+              {
+                order.status != "Выполнено" ? 
+                <>
+                <Button onClick={() => props.closeOrder(props.id) }>Закрыть Заявку</Button>
+                <Button
+                  variant={"outline-danger"}
+                  onClick={() => removeOrder(props.id)}
+                >
+                  Удалить
+                </Button></> : null
+              }
             </div>
           </div>
         </div>
@@ -131,6 +154,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    closeOrder: (orderId) => dispatch(closeOrder(orderId)),
     removeOrder: (orderId) => dispatch(removeOrder(orderId)),
     chooseEmployee: (orderId, employeesId) =>
       dispatch(chooseEmployee(orderId, employeesId)),

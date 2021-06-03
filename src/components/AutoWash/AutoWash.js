@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { Button } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
@@ -9,7 +10,6 @@ import OwnTable from "../layout/OwnTable";
 
 const AutoWash = (props) => {
   const orders = props.orders;
-  console.log(orders);
   return (
     <div style={{margin: "0.5em"}}>
       <h1>Заявки</h1>
@@ -20,15 +20,19 @@ const AutoWash = (props) => {
               <div>
                 <div>Заявка {index + 1}</div>
                 <div>Дата Создание {order.order_date}</div>
+                {order.date_closed && `Дата Закрыте: ${new Date(order.date_closed * 1000)}`}
                 <div>Статус: {order.status}</div>
               </div>
               <div>
-                <Button
+                {
+                  order.status != "Выполнено" ?
+                  <Button
                   onClick={() => props.removeOrder(order.id)}
                   variant={"outline-danger"}
                 >
                   Удалить
-                </Button>
+                </Button> : null
+                }
               </div>
             </div>
           </Link>
