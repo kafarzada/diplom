@@ -14,6 +14,20 @@ export const changePrice = (id, price) => {
 };
 
 
+export const addService = (name, price) => {
+    return (dispatch, getState, { getFirestore }) => {
+      const firestore = getFirestore();
+      firestore
+        .collection("services/rggQUehfahL1LFQGS17R/autowathServices")
+        .add({
+            name,
+            price,
+        })
+        .then(data=> console.log(data))
+        .catch(err => console.log(err))
+    };
+  };
+
 export const removeService = (id) => {
     return (dispatch, getState, { getFirestore }) => {
       const firestore = getFirestore();

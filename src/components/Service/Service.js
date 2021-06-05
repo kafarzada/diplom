@@ -5,15 +5,33 @@ import { firestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import * as Icon from "react-bootstrap-icons";
-import { changePrice, removeService, sortedService } from "../../store/actions/serviceActions";
+import { addService, changePrice, removeService, sortedService } from "../../store/actions/serviceActions";
+import { Button } from "react-bootstrap";
 
 const Service = (props) => {
   const [edit, setEdit] = useState(false);
+  const [open, setOpen] = useState(false)
+  const { handleSubmit, register, errors } = useForm();
   const [service, setService] = useState({});
+
+  const onSubmit = (data) => {
+    props.addService(data.name, Number(data.price))
+    setOpen(false)
+  };
 
   return (
     <div>
       <h2>Услуги Автомойки</h2>
+      {
+          open ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input  {...register("name")} placeholder={"Название"}/>
+                <input  {...register("price")} placeholder={"Цена"}/>
+                <Button type="submit">Добавить</Button>
+            </form>
+          ): null
+      }
+      <Button onClick={() => setOpen(!open)}>{open ? "-" : "+"}</Button>
       {edit ? (
         <>
           <EditService service={service} close={setEdit} changePrice={props.changePrice} remove={props.remove}/>
@@ -93,7 +111,8 @@ export default compose(
       return {
           changePrice: (id, price) => dispatch(changePrice(id, price)),
           remove: (id) => dispatch(removeService(id)),
-          sort: () => dispatch(sortedService())
+          sort: () => dispatch(sortedService()),
+          addService: (name, price) => dispatch(addService(name, price))
       };
     }
   )
