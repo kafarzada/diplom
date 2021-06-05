@@ -22,6 +22,7 @@ const Employee = (props) => {
               <td>{employe.lastname}</td>
               <td>{employe.patronymic}</td>
               <td>{employe.phone}</td>
+              <td>{employe.status ? "занят" : "свободен"}</td>
               <td>{employe.orderCount}</td>
               </>
             }
@@ -43,6 +44,7 @@ const Employee = (props) => {
                   <th>Имя</th>
                   <th>Отчество</th>
                   <th>Контактный Номер</th>
+                  <th>Статус</th>
                   <th>Всего заявок</th>
                 </tr>
               </thead>

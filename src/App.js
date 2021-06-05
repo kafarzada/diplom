@@ -20,6 +20,7 @@ import NewClient from './components/Client/NewClient';
 import NewCar from './components/Cars/NewCar';
 import NewEmployee from './components/Employee/NewEmployee';
 import OrdeDetails from './components/AutoWash/OrdeDetails';
+import Service from './components/Service/Service';
 
 function App(props) {
   const {auth} = props 
@@ -49,6 +50,7 @@ function App(props) {
                         <Route  path="/employee" component={ Employee }></Route>
                         <Route path="/newemployee" component={ NewEmployee }></Route>
                         <Route path="/employeedetails/:id" component={ EmployeeDetails }></Route>
+                        <Route path="/service" component={ Service }></Route>
                         <Route  path="/history" component={ History }></Route>
                         <Route  path="/settings" component={ Settings }></Route>
                       </Switch>
