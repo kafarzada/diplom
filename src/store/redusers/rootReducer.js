@@ -9,6 +9,7 @@ import EmployeeReducer from "./employeeReducer";
 import {reducer as formReducer} from "redux-form"
 import mainReducer from "./mainReducer";
 import parkingReducer from "./parkingReducer";
+import serviceReducer from "./serviseReducer";
 
 const rootReducer = combineReducers({
     main: mainReducer,
@@ -17,9 +18,9 @@ const rootReducer = combineReducers({
     car: CarReducer,
     parking: parkingReducer,
     employeeReducer: EmployeeReducer,
+    serviceReducer: serviceReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer,
-    //firestore: createFirestoreInstance
     form: formReducer
 })
 

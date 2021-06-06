@@ -21,6 +21,7 @@ import NewCar from './components/Cars/NewCar';
 import NewEmployee from './components/Employee/NewEmployee';
 import OrdeDetails from './components/AutoWash/OrdeDetails';
 import Service from './components/Service/Service';
+import Report from './components/Report/Report';
 
 function App(props) {
   const {auth} = props 
@@ -34,10 +35,10 @@ function App(props) {
           </Row>
           
         {auth.uid ? <Row className="main">
-                    <Col sm={3}>
+                    <Col sm={2}>
                       <Navbar />
                     </Col>
-                    <Col sm={9} className="page">
+                    <Col sm={10} className="page">
                       <Switch>
                         <Route exact path="/" component={Home}></Route>
                         <Route  path="/parking" component={ Parking }></Route>
@@ -51,6 +52,7 @@ function App(props) {
                         <Route path="/newemployee" component={ NewEmployee }></Route>
                         <Route path="/employeedetails/:id" component={ EmployeeDetails }></Route>
                         <Route path="/service" component={ Service }></Route>
+                        <Route path="/report" component={ Report }></Route>
                         <Route  path="/history" component={ History }></Route>
                         <Route  path="/settings" component={ Settings }></Route>
                       </Switch>
