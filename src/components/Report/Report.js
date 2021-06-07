@@ -1,48 +1,65 @@
+import moment from "moment";
 import React from "react";
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import { createReport } from "../../store/actions/reportAction";
 import { getSubservices } from "../../store/actions/serviceActions";
 
 const Report = (props) => {
   const { handleSubmit, register, errors } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    props.createReport(data);
   };
 
   const changeService = (e) => {
     props.getSubService(e.currentTarget.value);
   };
 
-  const getShortText =(s)  =>{
-      return    s.length > 40 ? s.substring(0, 40) + "..." : s
-  }
-
-  console.log(props.subService)
+  const getShortText = (s) => {
+    return s.length > 40 ? s.substring(0, 40) + "..." : s;
+  };
+  console.log(props.orders);
   return (
-    <div> 
+    <div>
       <h1>Составление Отчетов</h1>
-      <form onSubmit={handleSubmit(onSubmit)} style={{maxWidth: "900px", margin: "0 auto"}}>
-        <div style={{ display: "flex", justifyContent: "space-between",  marginBottom: "20px" }}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ maxWidth: "900px", margin: "0 auto" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
           <div>
             <label>Начало</label>
-            <input {...register('start_date')} type={"date"} />
+            <input {...register("start_date")} type={"date"} />
           </div>
 
           <div>
             <label>Конец</label>
-            <input {...register('end_date')} type={"date"} />
+            <input {...register("end_date")} type={"date"} />
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
           <div>
             <label>Тип Услуги</label>
-            <select {...register('service')} onChange={changeService}>
-                <option value="Все">Все</option>
+            <select {...register("service")} onChange={changeService}>
+              <option value="Все">Все</option>
               {props.services &&
                 props.services.map((s, i) => {
                   return (
@@ -56,7 +73,7 @@ const Report = (props) => {
 
           <div>
             <label>Подтип Услуги</label>
-            <select {...register('sub_service')}>
+            <select {...register("sub_service")}>
               {props.subService &&
                 props.subService.map((s, i) => {
                   return <option key={i}>{getShortText(s.data.name)}</option>;
@@ -65,20 +82,74 @@ const Report = (props) => {
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between",  marginBottom: "20px"  }}>
-            <label>Фильт по сотрудником</label> 
-            <select {...register('employee')}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
+          <label>Фильт по сотрудником</label>
+          <select {...register("employee")}>
             <option value=""></option>
-              {props.employees &&
-                props.employees.map((e, i) => {
-                  return <option value={e.id} key={i}>{`${e.firstname} ${e.lastname}`}</option>;
-                })}
-            </select>
+            {props.employees &&
+              props.employees.map((e, i) => {
+                return (
+                  <option
+                    value={e.id}
+                    key={i}
+                  >{`${e.firstname} ${e.lastname}`}</option>
+                );
+              })}
+          </select>
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end",  marginBottom: "20px"  }}>
-            <Button type="submit">Вывести отчет</Button>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "20px",
+          }}
+        >
+          <Button type="submit">Готова</Button>
         </div>
       </form>
+
+      <div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Дата создание</th>
+              <th>Услуга</th>
+              <th>Услуги</th>
+              <th>Дата Закрытие</th>
+              <th>Сотрудник</th>
+              <th>Цена</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.orders &&
+              props.orders.map((o, i) => {
+                return (
+                  <tr key={i}>
+                    {
+                      <>
+                        <td>{i + 1}</td>
+                        <td>{o.order_date}</td>
+                        <td>{o.type}</td>
+                        <td>{o.services.map((s) => (<div>{s.name}</div>))} </td>
+                        {/* <td>{moment(o.date_closed.toDate().toString())}</td> */}
+                        <td>{o.date_closed.toDate().toDateString()}</td>
+                        <td>{o.employees.map((emp) => emp.firstname)}</td>
+                        <td>{o.totalPrice}</td>
+                      </>
+                    }
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };
@@ -86,17 +157,20 @@ const Report = (props) => {
 export default compose(
   connect(
     (state) => {
+      console.log(state.reportReducer)
       return {
         services: state.firestore.ordered.services,
         employees: state.firestore.ordered.employees,
-        subService: state.serviceReducer.services
+        subService: state.serviceReducer.services,
+        orders: state.reportReducer.orders,
       };
     },
     (dispatch) => {
       return {
         getSubService: (name) => dispatch(getSubservices(name)),
+        createReport: (data) => dispatch(createReport(data)),
       };
     }
   ),
-  firestoreConnect([{ collection: "services" }, {collection: "employees"}])
+  firestoreConnect([{ collection: "services" }, { collection: "employees" }])
 )(Report);
