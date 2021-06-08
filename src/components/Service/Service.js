@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { connect, useSelector } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import * as Icon from "react-bootstrap-icons";
@@ -23,6 +23,10 @@ const Service = (props) => {
     props.addService(data.name, Number(data.price));
     setOpen(false);
   };
+
+  useFirestoreConnect(['services'])
+  const  s = useSelector(state => state.firestore.data.service)
+  console.log(s);
 
   return (
     <div>
@@ -62,7 +66,7 @@ const Service = (props) => {
                     }}
                   >
                     <Link>{s.name}</Link>
-                    <div>{s.price}</div>
+                    <div>{s.price + " руб."}</div>
                   </div>
                 );
               })}
@@ -121,7 +125,6 @@ export default compose(
   ]),
   connect(
     (state) => {
-      console.log(state.firestore);
       return {
         autoWashServices:
           state.firestore.ordered[
