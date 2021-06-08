@@ -1,7 +1,7 @@
 export const createReport = (data) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    let orderRef = firestore.collection("orders");
+    let orderRef = firestore.collection("orders")
     let result;
 
     if (data.start_date) {

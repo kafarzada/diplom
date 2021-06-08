@@ -8,6 +8,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { createReport } from "../../store/actions/reportAction";
 import { getSubservices } from "../../store/actions/serviceActions";
+import * as Excel from "exceljs/dist/exceljs.min.js";
+import * as ExcelProper from "exceljs";
 
 const Report = (props) => {
   const { handleSubmit, register, errors } = useForm();
@@ -23,7 +25,29 @@ const Report = (props) => {
   const getShortText = (s) => {
     return s.length > 40 ? s.substring(0, 40) + "..." : s;
   };
-  console.log(props.orders);
+
+  async function onclickHandler() {
+    const workbook = new Excel.Workbook();
+    const sheet = workbook.addWorksheet("Отчет");
+
+    sheet.columns = [
+      { header: "Дата создание", key: "date", width: 10 },
+      { header: "Услуга", key: "service", width: 10 },
+      { header: "Услуги", key: "services", width: 10 },
+      { header: "Дата Закрытие", key: "date_closed", width: 10 },
+      { header: "Сотрудник", key: "employee", width: 10 },
+      { header: "Цена", key: "price", width: 10 },
+    ];
+
+    props.orders &&
+      props.orders.forEach((order) => {
+        sheet.addRow(order).commit();
+      });
+
+    await workbook.csv
+      .writeBuffer("../temp.xlsx")
+      .then(() => console.log("Отчет экспортирован"));
+  }
   return (
     <div>
       <h1>Составление Отчетов</h1>
@@ -137,7 +161,11 @@ const Report = (props) => {
                         <td>{i + 1}</td>
                         <td>{o.order_date}</td>
                         <td>{o.type}</td>
-                        <td>{o.services.map((s) => (<div>{s.name}</div>))} </td>
+                        <td>
+                          {o.services.map((s) => (
+                            <div>{s.name}</div>
+                          ))}{" "}
+                        </td>
                         {/* <td>{moment(o.date_closed.toDate().toString())}</td> */}
                         <td>{o.date_closed.toDate().toDateString()}</td>
                         <td>{o.employees.map((emp) => emp.firstname)}</td>
@@ -149,6 +177,17 @@ const Report = (props) => {
               })}
           </tbody>
         </Table>
+        <div style={{textAlign:"right", fontSize: "20px"}}>{"Итого: " + props.summ + " руб."}</div>
+        <div
+          onClick={onclickHandler}
+          style={{
+            margin: "20px",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button style={{visibility: props.orders.length ? "visible": "hidden" }}>Экспортировать в Excel</Button>
+        </div>
       </div>
     </div>
   );
@@ -157,12 +196,13 @@ const Report = (props) => {
 export default compose(
   connect(
     (state) => {
-      console.log(state.reportReducer)
+      console.log(state.reportReducer);
       return {
         services: state.firestore.ordered.services,
         employees: state.firestore.ordered.employees,
         subService: state.serviceReducer.services,
         orders: state.reportReducer.orders,
+        summ: state.reportReducer.summ
       };
     },
     (dispatch) => {

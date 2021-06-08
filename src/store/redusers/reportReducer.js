@@ -8,7 +8,10 @@ const reportReducer = (state = initialState, action) => {
     case "CREATE_REPORT_SUCCESS":
       return {
         ...state,
-        orders: [...action.arr]
+        orders: [...action.arr],
+        summ: action.arr.reduce((acc, curr) => {
+          return acc + curr.totalPrice
+        }, 0)
       };
     case "CREATE_REPORT_ERROR":
       console.log(action.err);

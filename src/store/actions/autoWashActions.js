@@ -53,7 +53,6 @@ export const chooseEmployee = (OrderId, employeeId) => {
           employees.push({ id: e.id, firstname, lastname });
           firestore.collection("orders").doc(OrderId).update({
             employees,
-            close_date: new Date.now()
           });
         })
         .catch();
