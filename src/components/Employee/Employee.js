@@ -18,7 +18,7 @@ const Employee = (props) => {
           {
             <>
               <td>{index + 1}</td>
-              <td>
+             <td>
                 <Link to={"/employeedetails/" + employe.id}>
                   {employe.firstname}
                 </Link>
@@ -59,7 +59,7 @@ const Employee = (props) => {
               <th>Всего заявок</th>
             </tr>
           </thead>
-          
+
           <tbody>{employeesList}</tbody>
         </Table>
       </Row>

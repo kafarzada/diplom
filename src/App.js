@@ -13,7 +13,7 @@ import History from './components/History/History';
 import Settings from './components/Settings/Settings';
 import Header from './components/Header/Header'
 import SignIn from './components/SignIn/SingIn';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import EmployeeDetails from './components/Employee/EmployeDetails';
 import ClientDetails from './components/Client/ClientDetails';
 import NewClient from './components/Client/NewClient';
@@ -25,6 +25,7 @@ import Report from './components/Report/Report';
 
 function App(props) {
   const {auth} = props 
+
   return (
     <BrowserRouter>
         <div className="App">

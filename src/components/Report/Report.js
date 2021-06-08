@@ -177,7 +177,9 @@ const Report = (props) => {
               })}
           </tbody>
         </Table>
-        <div style={{textAlign:"right", fontSize: "20px"}}>{"Итого: " + props.summ + " руб."}</div>
+        <div style={{ textAlign: "right", fontSize: "20px" }}>
+          {"Итого: " + props.summ + " руб."}
+        </div>
         <div
           onClick={onclickHandler}
           style={{
@@ -186,7 +188,11 @@ const Report = (props) => {
             justifyContent: "flex-end",
           }}
         >
-          <Button style={{visibility: props.orders.length ? "visible": "hidden" }}>Экспортировать в Excel</Button>
+          <Button
+            style={{ visibility: props.orders.length ? "visible" : "hidden" }}
+          >
+            Экспортировать в Excel
+          </Button>
         </div>
       </div>
     </div>
@@ -196,13 +202,12 @@ const Report = (props) => {
 export default compose(
   connect(
     (state) => {
-      console.log(state.reportReducer);
       return {
         services: state.firestore.ordered.services,
         employees: state.firestore.ordered.employees,
         subService: state.serviceReducer.services,
         orders: state.reportReducer.orders,
-        summ: state.reportReducer.summ
+        summ: state.reportReducer.summ,
       };
     },
     (dispatch) => {

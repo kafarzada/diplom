@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, useFirestoreConnect } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { getCars, removeCar, removeClient } from '../../store/actions/clientActions'
@@ -20,14 +20,14 @@ class ClientDetails extends Component {
     }
 
 
-
     componentDidMount() {
-     //   this.props.getCars(this.props.id)
+        
     }
 
     
+
+    
     render() {
-        
         const {client, id, totalCar} = this.props
         if(client && id) {
             return (
