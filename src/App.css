@@ -41,7 +41,7 @@ html, body {
 
 .navParking {
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgb(189, 179, 221);
+  border: 1px solid #eee;
   padding: 1.2em;
   margin: 0.5em;
   padding: 20px;
@@ -63,7 +63,7 @@ Link {
 
 .order {
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgb(189, 179, 221);
+  border: 1px solid #eee;
   padding: 20px;
   margin-bottom: 20px;
 }
@@ -71,4 +71,6 @@ Link {
 .tab {
   padding-left: 20px;
 }
+
+
 

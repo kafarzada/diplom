@@ -37,6 +37,7 @@ const OrderDetail = (props) => {
             <div style={{ marginBottom: "20px" }}>
               <div>Дата Создание {order.order_date}</div>
               <div>Статус: {order.status}</div>
+              <div>{order.paided} <Button>Оплатить Наличными</Button></div>
               {/* <div>Создал: {client&& client.firstname}</div> */}
             </div>
             <div style={{ marginBottom: "20px" }}>

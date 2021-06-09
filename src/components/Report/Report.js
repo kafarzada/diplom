@@ -45,7 +45,7 @@ const Report = (props) => {
       });
 
     await workbook.csv
-      .writeBuffer("../temp.xlsx")
+      .writeBuffer("C://Users//12345//Desktop//Вургун//temp.xlsx")
       .then(() => console.log("Отчет экспортирован"));
   }
   return (
