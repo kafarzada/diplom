@@ -3,6 +3,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
+import { Link } from "react-router-dom";
 import { compose } from "redux";
 
 const History = (props) => {
@@ -13,7 +14,7 @@ const History = (props) => {
       <tr key={history.id}>
         <td>{i + 1}</td>
         <td>{new Date(history.date_closed * 1000).toUTCString()}</td>
-        <td>{history.clientId}</td>
+        <td><Link to={"/clientdetails/" +history.clientId} >{history.clientId}</Link></td>
         <td>{history.totalPrice}</td>
         <td>{history.tranzaction}</td>
       </tr>

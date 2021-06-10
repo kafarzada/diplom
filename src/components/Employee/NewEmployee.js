@@ -51,7 +51,7 @@ const NewEmployeTemp = (props) => {
                 </Field>
             </div>
             <div>
-                <Field name={"phone"} component={'input'} type="text"></Field>
+                <Field name={"phone"} component={'input'} placeholder="Номер телефона" type="text"></Field>
             </div>
 
             <div><Button type="submit">Добавить Сотрудника</Button></div>

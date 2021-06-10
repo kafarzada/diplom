@@ -15,7 +15,8 @@ const OrderDetail = (props) => {
   const order = props.order;
   const client = props.client;
   console.log(order);
-  const [openEmployeeList, setOpenEmployeeList] = useState(true);
+  const [openEmployeeList, setOpenEmployeeList] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const { register, handleSubmit, errors } = useForm();
 

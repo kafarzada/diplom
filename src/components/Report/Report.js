@@ -8,8 +8,9 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { createReport } from "../../store/actions/reportAction";
 import { getSubservices } from "../../store/actions/serviceActions";
-import * as Excel from "exceljs/dist/exceljs.min.js";
-import * as ExcelProper from "exceljs";
+
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const Report = (props) => {
   const { handleSubmit, register, errors } = useForm();
@@ -26,27 +27,16 @@ const Report = (props) => {
     return s.length > 40 ? s.substring(0, 40) + "..." : s;
   };
 
-  async function onclickHandler() {
-    const workbook = new Excel.Workbook();
-    const sheet = workbook.addWorksheet("Отчет");
-
-    sheet.columns = [
-      { header: "Дата создание", key: "date", width: 10 },
-      { header: "Услуга", key: "service", width: 10 },
-      { header: "Услуги", key: "services", width: 10 },
-      { header: "Дата Закрытие", key: "date_closed", width: 10 },
-      { header: "Сотрудник", key: "employee", width: 10 },
-      { header: "Цена", key: "price", width: 10 },
-    ];
-
-    props.orders &&
-      props.orders.forEach((order) => {
-        sheet.addRow(order).commit();
-      });
-
-    await workbook.csv
-      .writeBuffer("C://Users//12345//Desktop//Вургун//temp.xlsx")
-      .then(() => console.log("Отчет экспортирован"));
+ function onclickHandler() {
+      const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+      const fileExtension = '.xlsx';
+      
+        const ws = XLSX.utils.json_to_sheet(props.orders);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], {type: fileType});
+        FileSaver.saveAs(data, "отчет" + fileExtension);
+ 
   }
   return (
     <div>

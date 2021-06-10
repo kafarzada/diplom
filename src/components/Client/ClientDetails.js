@@ -45,7 +45,7 @@ class ClientDetails extends Component {
                    </div>
                    <hr></hr>
                    <div>
-                       <h3>Транспорты</h3>
+                       <h3>Транспортные Средства</h3>
                        <div className={s.transports}>
     
                             {

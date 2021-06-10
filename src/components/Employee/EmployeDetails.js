@@ -17,12 +17,17 @@ const EmployeeDetails = (props) => {
 
   if (employee) {
     return (
+      <>
+      
       <div className={s.employee__details}>
+        
         <div className={s.employee__image}>
           <div className={s.empImg}></div>
         </div>
         <div className={s.employee__info}>
+        
           <ul>
+            <li><h3>Сотрудник</h3></li>
             <li className={s.info__item}>
               {" "}
               <span>Имя:</span>
@@ -71,6 +76,7 @@ const EmployeeDetails = (props) => {
           </div>
         </div>
       </div>
+      </>
     );
   } else {
     return (

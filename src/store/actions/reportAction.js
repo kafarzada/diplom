@@ -1,12 +1,14 @@
 export const createReport = (data) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    let orderRef = firestore.collection("orders")
+    let orderRef = firestore.collection("orders").where("paided", "==", "Оплачено")
     let result;
 
     if (data.start_date) {
       result = orderRef.where("order_date", ">", data.start_date).get();
     }
+
+    
 
     if (data.end_date) {
       result = orderRef
