@@ -13,6 +13,7 @@ export const addClient = (newClient) => {
             sex,
             scope: 0,
             cars: 0,
+            bonus: 0,
             registrationDate: new Date()
         }).then((client) => {
             dispatch({ type: "ADD_NEW_CLIENT_SUCCES", client })

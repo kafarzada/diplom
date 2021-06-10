@@ -22,6 +22,7 @@ const Client = (props) => {
               <th>Имя</th>
               <th>Отчество</th>
               <th>Количество Машин</th>
+              <th>Бонус</th>
             </tr>
           </thead>
           <tbody>
@@ -36,6 +37,7 @@ const Client = (props) => {
                       <td>{client.lastname}</td>
                       <td>{client.patronymic}</td>
                       <td>{client.cars}</td>
+                      <td>{client.bonus}</td>
                     </tr>
                   )
                 })

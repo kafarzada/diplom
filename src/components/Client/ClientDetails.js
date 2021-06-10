@@ -40,7 +40,7 @@ class ClientDetails extends Component {
                         <div><span>Контактный Номер: </span>{client.phone}</div>
                         <div><span>Дата Регистрации: </span>{moment(client.registrationDate.toDate().toString()).calendar()}</div>
                         <div><span>Количсетво Транспорта:</span>{this.props.totalCar }<Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
-                        <div><span>Баланс:</span>{client.scope}</div>
+                        <div><span>Бонус:</span>{client.bonus}</div>
                         <Button variant={'danger'} onClick={() => {this.onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
                    </div>
                    <hr></hr>

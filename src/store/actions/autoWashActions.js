@@ -69,46 +69,55 @@ export const closeOrder = (orderId) => {
       .doc(orderId)
       .get()
       .then((data) => {
-        let { totalPrice, order_date } = data.data();
-        console.log(order_date);
-        const carsCount =
-          data.data().cars.length > 3 ? 3 : data.data().cars.length;
-        const sum = 10000;
-        const t = totalPrice > sum ? sum : totalPrice
-        console.log([t / sum, carsCount / 3, getKoff(order_date)]);
-        console.log(
-          Rating([t / sum, carsCount / 3, getKoff(order_date)])
-        );
+            let { totalPrice, order_date, clientId } = data.data();
+            const carsCount = data.data().cars.length > 3 ? 3 : data.data().cars.length;
+            const sum = 10000;
+            const t = totalPrice > sum ? sum : totalPrice;
+            console.log(Rating([t / sum, carsCount / 3, getKoff(order_date)]));
+
       })
       .catch((err) => console.log(err));
 
-    // firestore
-    //   .collection("orders")
-    //   .doc(orderId)
-    //   .update({
-    //     status: "Выполнено",
-    //     date_closed: new Date(),
-    //   })
-    //   .then((data) => {
-    //     firestore
-    //       .collection("orders")
-    //       .doc(orderId)
-    //       .get()
-    //       .then((data) => {
-    //         const employees = data.data().employees;
-    //         employees.forEach((employee) => {
-    //           firestore
-    //             .collection("employees")
-    //             .doc(employee.id)
-    //             .update({
-    //               orderCount: firestore.FieldValue.increment(1),
-    //               status: false,
-    //             });
-    //         });
-    //       })
-    //       .catch((err) => console.log(err));
-    //   })
-    //   .catch((err) => console.log(err));
+    firestore
+      .collection("orders")
+      .doc(orderId)
+      .update({
+        status: "Выполнено",
+        date_closed: new Date(),
+      })
+      .then((data) => {
+
+        firestore
+          .collection("orders")
+          .doc(orderId)
+          .get()
+          .then((data) => {
+            let { totalPrice, order_date, client } = data.data();
+            const carsCount = data.data().cars.length > 3 ? 3 : data.data().cars.length;
+            const sum = 10000;
+            const t = totalPrice > sum ? sum : totalPrice;
+            console.log(Rating([t / sum, carsCount / 3, getKoff(order_date)]));
+
+            console.log(data.data());
+            firestore.collection('client').doc(client).update({
+              "bonus": firestore.FieldValue.increment( Math.round( Rating([t / sum, carsCount / 3, getKoff(order_date)])))
+            })
+
+            const employees = data.data().employees;
+            employees.forEach((employee) => {
+              firestore
+                .collection("employees")
+                .doc(employee.id)
+                .update({
+                  orderCount: firestore.FieldValue.increment(1),
+                  status: false,
+                });
+            });
+          })
+          .catch((err) => console.log(err));
+
+      })
+      .catch((err) => console.log(err));
   };
 };
 
@@ -209,8 +218,7 @@ function BazaZnaniyRating(nomerkriteri, masiv) {
 function Rating(znach) {
   let masivnach = new Array(3);
   let masivsugeno = new Array(27);
-  let matricaznachprinad = new Array(27, 4);
-
+  let matricaznachprinad = new Array(27);
   for (let i = 0; i < 3; i++) {
     masivnach[i] = new Array(7);
   }
@@ -227,7 +235,7 @@ function Rating(znach) {
       masivnach[i][j] = diapozonrat[i][j - 1];
     }
   }
-  
+
   for (let i = 0; i < 3; i++) {
     let masiv = new Array(7);
 
@@ -238,7 +246,6 @@ function Rating(znach) {
       matricaznachprinad[j][i] = BazaZnaniyRating(i, masiv)[j];
     }
   }
-  
 
   for (let i = 0; i < 27; i++) {
     matricaznachprinad[i][3] = Math.min(
@@ -246,18 +253,21 @@ function Rating(znach) {
       matricaznachprinad[i][2]
     );
     masivsugeno[i] =
-      50 * masivnach[0][0] + 30 * masivnach[0][1] + 20 * masivnach[2][0];
+      50 * masivnach[0][0] + 30 * masivnach[1][0] + 20 * masivnach[2][0];
   }
 
   let summinznachmatricaznachprinad = 0;
-  let masivchislit = new Array(24);
+  let masivchislit = new Array(27);
 
   for (let i = 0; i < 27; i++) {
     masivchislit[i] = matricaznachprinad[i][3] * masivsugeno[i];
     summinznachmatricaznachprinad += matricaznachprinad[i][3];
   }
 
-  otvet = masivchislit.reduce((sum, curr) => sum + curr, 0);
+  otvet =
+    masivchislit.reduce((sum, curr) => sum + curr, 0) /
+    summinznachmatricaznachprinad;
+
   return otvet;
 }
 
