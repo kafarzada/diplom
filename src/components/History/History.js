@@ -2,15 +2,18 @@ import moment from "moment";
 import React from "react";
 import { Table } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 
 const History = (props) => {
-  console.log(props.histories);
+
+  useFirestoreConnect({collection: "history", orderBy: ["date_closed", "desc"] })
+  const histories = useSelector(state => state.firestore.ordered.history)
+  console.log(histories);
   const historyList =
-    props.histories &&
-    props.histories.map((history, i) => (
+    histories &&
+    histories.map((history, i) => (
       <tr key={history.id}>
         <td>{i + 1}</td>
         <td>{new Date(history.date_closed * 1000).toUTCString()}</td>
@@ -38,12 +41,12 @@ const History = (props) => {
 };
 
 export default compose(
-  firestoreConnect([
-    { collection: "history", orderBy: ["date_closed", "desc"] },
-  ]),
-  connect((state) => {
-    return {
-      histories: state.firestore.ordered.history,
-    };
-  })
+  // firestoreConnect([
+  //   { collection: "history", orderBy: ["date_closed", "desc"] },
+  // ]),
+  // connect((state) => {
+  //   return {
+  //     histories: state.firestore.ordered.history,
+  //   };
+  // })
 )(History);

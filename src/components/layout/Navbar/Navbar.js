@@ -1,6 +1,4 @@
 import React from 'react'
-import { Nav } from 'react-bootstrap'
-import { propTypes } from 'react-bootstrap/esm/Image'
 import { connect, useSelector } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
