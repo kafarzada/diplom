@@ -121,6 +121,14 @@ export const closeOrder = (orderId) => {
   };
 };
 
+export const changeIsNewOrder = () => {
+  return (dispatch, getState, { getFirestore }) => {
+    getFirestore().collection('setting').doc("FOJgu4rX7NgMXo0cJpTt").update({
+      newOrder: false
+    })
+  }
+}
+
 const matricarating = [
   [0, 0, 0, 0],
   [0, 0, 1, 1],
