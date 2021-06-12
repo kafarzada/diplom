@@ -2,13 +2,21 @@ import moment from "moment";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { removeOrder } from "../../store/actions/autoWashActions";
 
 const AutoWash = (props) => {
-  const orders = props.orders;
+
+  const [query, setQuery] = useState('Все')
+  useFirestoreConnect([
+    {collection: "orders", orderBy: ["order_date", "desc"], }
+  ])
+
+
+
+  const orders = useSelector(state => state.firestore.ordered.orders)
   const getStyle = (paided) => {
     return {
       color: paided != "Оплачено" ? "red" : "#007bff"
@@ -24,6 +32,7 @@ const AutoWash = (props) => {
               <div>
                 <div>Заявка {index + 1}</div>
                 <div>Дата Создание {order.order_date}</div>
+                <div>Сумма: {order.totalPrice + " руб"}</div>
                 <div style={getStyle(order.paided)}>{order.paided}</div>
                 {order.date_closed && `Дата Закрыте: ${new Date(order.date_closed * 1000)}`}
                 <div>Статус: {order.status}</div>
@@ -46,11 +55,7 @@ const AutoWash = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    orders: state.firestore.ordered.orders,
-  };
-};
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -59,6 +64,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default compose(
-  firestoreConnect([{ collection: "orders", orderBy: ["order_date", "desc"] }]),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(null, mapDispatchToProps)
 )(AutoWash);

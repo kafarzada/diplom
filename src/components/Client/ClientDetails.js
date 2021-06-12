@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { firestoreConnect, useFirestoreConnect } from 'react-redux-firebase'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -10,25 +10,27 @@ import s from "./ClientDetail.module.css"
 import Transport from './Transport'
 import moment from "moment"
 
-class ClientDetails extends Component {
+function  ClientDetails(props){
     
 
-     onClickHandlerRemoveCLient = (id) => {
+     const onClickHandlerRemoveCLient = (id) => {
         
-        this.props.removeClient(id)
-        this.props.history.goBack()
+        props.removeClient(id)
+        props.history.goBack()
     }
 
 
-    componentDidMount() {
-        
-    }
+
 
     
 
-    
-    render() {
-        const {client, id, totalCar} = this.props
+
+        const {client, id, totalCar} = props
+        useFirestoreConnect({
+            collection: "orders", where:["client", "==", id], orderBy: ["order_date", "desc"]
+        })
+
+        const orders = useSelector(state => state.firebase.ordered.orders)
         if(client && id) {
             return (
                 <div>
@@ -39,11 +41,20 @@ class ClientDetails extends Component {
                         <div><span>Отчество:</span>{client.patronymic}</div>
                         <div><span>Контактный Номер: </span>{client.phone}</div>
                         <div><span>Дата Регистрации: </span>{moment(client.registrationDate.toDate().toString()).calendar()}</div>
-                        <div><span>Количсетво Транспорта:</span>{this.props.totalCar }<Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
+                        <div><span>Количсетво Транспорта:</span>{props.totalCar }<Link to={"/newCar/" + id}> <Button variant="outline-secondary" size="sm">Добавить Транспорт</Button></Link></div>
                         <div><span>Бонус:</span>{client.bonus}</div>
-                        <Button variant={'danger'} onClick={() => {this.onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
+                        <Button variant={'danger'} onClick={() => {onClickHandlerRemoveCLient(id)}}>Удалить Клиента</Button>
                    </div>
                    <hr></hr>
+                   <div>
+                       {
+                           orders && orders.map((order, index) => (
+                               <div key={index}>
+                                   <div>Дата Создание: {new Date(order.order_date)}</div>
+                                </div>
+                           ))
+                       }
+                   </div>
                    <div>
                        <h3>Транспортные Средства</h3>
                        <div className={s.transports}>
@@ -51,13 +62,10 @@ class ClientDetails extends Component {
                             {
                                 totalCar ===0 ? <p className={s.emptyTransport}>Нет траспорта...</p> :
     
-                                this.props.cars.map((car, index) => {
-                                    return <Transport key={index} car={car} carId={car.id} userId={id} removeCar={this.props.removeCar}/>
+                                props.cars.map((car, index) => {
+                                    return <Transport key={index} car={car} carId={car.id} userId={id} removeCar={props.removeCar}/>
                                 })
-    
-    
                             }
-    
                        </div>
                    </div>
                 </div>
@@ -69,7 +77,7 @@ class ClientDetails extends Component {
                 </Spinner>
             )
         }
-    }
+ 
 
 }
 
