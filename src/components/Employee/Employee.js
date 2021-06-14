@@ -8,7 +8,6 @@ import { addEmployee } from "../../store/actions/employeeActions";
 
 const Employee = (props) => {
   const { employees } = props;
-  const { positions } = props;
 
   const employeesList =
     employees &&
@@ -39,7 +38,6 @@ const Employee = (props) => {
     <div>
       <Row>
         <Col>
-          {" "}
           <Link to="newemployee">
             <Button>Добавить Сотрудника</Button>
           </Link>

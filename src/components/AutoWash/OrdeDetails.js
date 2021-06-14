@@ -16,7 +16,6 @@ const OrderDetail = (props) => {
   const client = props.client;
   console.log(order);
   const [openEmployeeList, setOpenEmployeeList] = useState(false);
-  const [open, setOpen] = useState(false)
 
   const { register, handleSubmit, errors } = useForm();
 
@@ -65,6 +64,7 @@ const OrderDetail = (props) => {
                     </div>
                   ))}
               </div>
+              <div style={{textAlign: "right", fontSize:"30px", fontWeight: "bold"}}>На сумму: {order.totalPrice + "руб."}</div>
             </div>
 
             {

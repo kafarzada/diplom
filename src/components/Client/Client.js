@@ -1,19 +1,24 @@
 
-import React  from 'react';
-import { Button, Modal, Table } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import React, { useState }  from 'react';
+import { Button, FormText, Modal, Table } from 'react-bootstrap';
+import { connect, useSelector } from 'react-redux';
+import { firestoreConnect, useFirestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
+import { Form } from 'redux-form';
 
 
 const Client = (props) => {
+  useFirestoreConnect({collection: "client"})
 
-  const {clients} = props
+  const clients = useSelector(state => state.firestore.ordered.client)
+
 
   return (
     <div>
-    
+        <div style={{display: "flex",marginBottom: "20px"}}>
+          <input placeholder={"ФИО"}/><Button>Поиск</Button>
+        </div>
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -54,15 +59,6 @@ const Client = (props) => {
   )
 };
 
-const mapStateToProps = (state) => {
-  return {
-    clients: state.firestore.ordered.client
-  }
-}
 
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([
-    {collection: "client"}
-  ])
-)(Client)
+
+export default compose()(Client)
