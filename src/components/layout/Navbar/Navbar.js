@@ -23,6 +23,7 @@ const Navbar = (props) => {
             <li className="nav__item"><Link to="/parking">Автостоянка</Link></li>   
             <li className="nav__item"><Link to="/carwash" onClick={() => props.changeStatus()}>Автомойка <span style={style}></span></Link></li>   
             <li className="nav__item"><Link to="/clients">Клиенты</Link></li>   
+            <li className="nav__item"><Link to="/transports">Транспорты</Link></li> 
             <li className="nav__item"><Link to="/employee">Сотрудники</Link></li>  
             <li className="nav__item"><Link to="/service">Услуги</Link></li>  
             <li className="nav__item"><Link to="/report">Отчеты</Link></li> 
