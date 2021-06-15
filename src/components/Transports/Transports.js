@@ -41,7 +41,7 @@ function Transports(props) {
                     <td>{car.gosNumber}</td>
                     <td>{dateEntry}</td>
                     <td>{moment.unix(car.checkOutTime).format("ss:mm:hh:MM/DD/YYYY")}</td>
-                    <td><Button onClick={() => props.removeCar(car.id, car.userID)}>Удалить</Button>  </td>
+                    <td><Button variant={"outline-danger"} onClick={() => props.removeCar(car.id, car.userID)}>Удалить</Button>  </td>
                 </tr>;
               })
             : null}

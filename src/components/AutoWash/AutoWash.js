@@ -63,6 +63,10 @@ const AutoWash = (props) => {
         </select>
         <Button>Новая Заявка</Button>
       </div>
+
+      {
+        orders.length == 0 ? <div style={{margin: "20px", color: "red"}}>Пусто</div> : null
+      }
       {orders &&
         orders.map((order, index) => (
           <Link to={"/orderDetails/" + order.id}>
