@@ -2,10 +2,12 @@ import moment from "moment";
 import React from "react";
 import { Table } from "react-bootstrap";
 import { Link } from 'react-router-dom'
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
 import { useFirebaseConnect, useFirestoreConnect } from "react-redux-firebase";
+import { removeCar } from "../../store/actions/clientActions";
 
-function Transports() {
+function Transports(props) {
   useFirestoreConnect({ collection: "cars" });
   const cars = useSelector((state) => {
     return state.firestore.ordered.cars;
@@ -25,6 +27,7 @@ function Transports() {
             <th>Номер Траспорта</th>
             <th>Время Заезда</th>
             <th>Время выезда</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +41,7 @@ function Transports() {
                     <td>{car.gosNumber}</td>
                     <td>{dateEntry}</td>
                     <td>{moment.unix(car.checkOutTime).format("ss:mm:hh:MM/DD/YYYY")}</td>
+                    <td><Button onClick={() => props.removeCar(car.id, car.userID)}>Удалить</Button>  </td>
                 </tr>;
               })
             : null}
@@ -47,4 +51,8 @@ function Transports() {
   );
 }
 
-export default Transports;
+export default connect(null, (dispatch) => {
+  return {
+    removeCar: (carId, userId) => dispatch(removeCar(carId, userId))
+  }
+})(Transports);
