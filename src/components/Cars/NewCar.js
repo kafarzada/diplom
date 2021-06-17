@@ -24,6 +24,7 @@ class NewCar extends Component {
     onSubmit = (formData) => {
         formData.userId=this.props.userId
         this.props.addNewCar(formData)
+        this.props.history.goBack();
     }
 
 

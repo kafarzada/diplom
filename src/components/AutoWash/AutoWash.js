@@ -61,11 +61,11 @@ const AutoWash = (props) => {
           <option value={"Выполнено"}>Закрытые</option>
           <option value={"Не оплачено"}>Не оплаченные</option>
         </select>
-        <Button>Новая Заявка</Button>
+        <Link to={'/newOrder'}><Button>Новая Заявка</Button></Link>
       </div>
 
       {
-        orders.length == 0 ? <div style={{margin: "20px", color: "red"}}>Пусто</div> : null
+        orders && orders.length == 0 ? <div style={{margin: "20px", color: "red"}}>Пусто</div> : null
       }
       {orders &&
         orders.map((order, index) => (
@@ -73,10 +73,10 @@ const AutoWash = (props) => {
             <div className={"order"}>
               <div>
                 <div>Заявка {index + 1}</div>
-                <div>Дата Создание {order.order_date}</div>
+                <div>Дата Создание {new Date(order.order_date).toString()}</div>
                 <div>Сумма: {order.totalPrice + " руб"}</div>
                 <div style={getStyle(order.paided)}>{order.paided}</div>
-                {order.date_closed && `Дата Закрыте: ${new Date(order.date_closed * 1000)}`}
+                {order.date_closed && `Дата Закрыте: ${new Date(order.date_closed * 1000).toString()}`}
                 <div>Статус: {order.status}</div>
               </div>
               <div>
