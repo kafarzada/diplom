@@ -9,11 +9,12 @@ import { compose } from "redux";
 import { createReport } from "../../store/actions/reportAction";
 import { getSubservices } from "../../store/actions/serviceActions";
 
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 const Report = (props) => {
   const { handleSubmit, register, errors } = useForm();
+  const copyOrders = props.copyOrders && props.copyOrders;
 
   const onSubmit = (data) => {
     props.createReport(data);
@@ -27,17 +28,36 @@ const Report = (props) => {
     return s.length > 40 ? s.substring(0, 40) + "..." : s;
   };
 
- function onclickHandler() {
-      const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-      const fileExtension = '.xlsx';
-      
-        const ws = XLSX.utils.json_to_sheet(props.orders);
-        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], {type: fileType});
-        FileSaver.saveAs(data, "отчет" + fileExtension);
- 
+  function onclickHandler() {
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+
+    const ws = XLSX.utils.json_to_sheet(props.orders);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "отчет" + fileExtension);
   }
+
+  const filterEmployee = (event) => {
+    if (event.currentTarget.value == "Все") {
+      props.reset(props.copyOrders);
+    }
+
+    props.reset(props.copyOrders);
+
+    let emp =
+      props &&
+      props.orders.map((o) => {
+        return o.employees.find((e) => e.firstname == event.currentTarget.value)
+          ? o
+          : null;
+      });
+    emp = emp.filter((e) => e != null);
+    props.update(emp);
+  };
+
   return (
     <div>
       <h1>Составление Отчетов</h1>
@@ -84,18 +104,9 @@ const Report = (props) => {
                 })}
             </select>
           </div>
-
-          <div>
-            <label>Подтип Услуги</label>
-            <select {...register("sub_service")}>
-              {props.subService &&
-                props.subService.map((s, i) => {
-                  return <option key={i}>{getShortText(s.data.name)}</option>;
-                })}
-            </select>
-          </div>
         </div>
 
+        <Button type="submit">Готова</Button>
         <div
           style={{
             display: "flex",
@@ -104,13 +115,13 @@ const Report = (props) => {
           }}
         >
           <label>Фильт по сотрудником</label>
-          <select {...register("employee")}>
-            <option value=""></option>
+          <select onChange={(e) => filterEmployee(e)}>
+            <option value="Все">Все</option>
             {props.employees &&
               props.employees.map((e, i) => {
                 return (
                   <option
-                    value={e.id}
+                    value={e.firstname}
                     key={i}
                   >{`${e.firstname} ${e.lastname}`}</option>
                 );
@@ -123,9 +134,7 @@ const Report = (props) => {
             justifyContent: "flex-end",
             marginBottom: "20px",
           }}
-        >
-          <Button type="submit">Готова</Button>
-        </div>
+        ></div>
       </form>
 
       <div>
@@ -136,7 +145,6 @@ const Report = (props) => {
               <th>Дата создание</th>
               <th>Услуга</th>
               <th>Услуги</th>
-              <th>Дата Закрытие</th>
               <th>Сотрудник</th>
               <th>Цена</th>
             </tr>
@@ -156,9 +164,12 @@ const Report = (props) => {
                             <div>{s.name}</div>
                           ))}{" "}
                         </td>
-                        {/* <td>{moment(o.date_closed.toDate().toString())}</td> */}
-                        <td>{o.date_closed.toDate().toDateString()}</td>
-                        <td>{o.employees.map((emp) => emp.firstname)}</td>
+
+                        <td>
+                          {o.employees.map((emp) => (
+                            <div>{emp.firstname}</div>
+                          ))}
+                        </td>
                         <td>{o.totalPrice}</td>
                       </>
                     }
@@ -197,6 +208,7 @@ export default compose(
         employees: state.firestore.ordered.employees,
         subService: state.serviceReducer.services,
         orders: state.reportReducer.orders,
+        copyOrders: state.reportReducer.copyOrders,
         summ: state.reportReducer.summ,
       };
     },
@@ -204,6 +216,8 @@ export default compose(
       return {
         getSubService: (name) => dispatch(getSubservices(name)),
         createReport: (data) => dispatch(createReport(data)),
+        update: (orders) => dispatch({ type: "EMPLOYEE_ORDER", arr: orders }),
+        reset: (orders) => dispatch({ type: "CREATE_REPORT_SUCCESS", arr: orders })
       };
     }
   ),

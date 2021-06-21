@@ -8,7 +8,6 @@ export const createReport = (data) => {
       result = orderRef.where("order_date", ">", data.start_date).get();
     }
 
-    
 
     if (data.end_date) {
       result = orderRef
@@ -33,6 +32,7 @@ export const createReport = (data) => {
         }
 
     }
+
 
     result
       .then((querySnapshot) => {

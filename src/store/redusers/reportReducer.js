@@ -1,5 +1,6 @@
 const initialState = {
   orders: [],
+  copyOrders: [],
   summ: 0
 };
 
@@ -9,6 +10,7 @@ const reportReducer = (state = initialState, action) => {
       return {
         ...state,
         orders: [...action.arr],
+        copyOrders: [...action.arr],
         summ: action.arr.reduce((acc, curr) => {
           return acc + curr.totalPrice
         }, 0)
@@ -16,6 +18,15 @@ const reportReducer = (state = initialState, action) => {
     case "CREATE_REPORT_ERROR":
       console.log(action.err);
       return state;
+    
+    case "EMPLOYEE_ORDER":
+      return {
+        ...state,
+        orders: [...action.arr],
+        summ: action.arr.reduce((acc, curr) => {
+          return acc + curr.totalPrice
+        }, 0)
+      }
 
     default:
       return state;
